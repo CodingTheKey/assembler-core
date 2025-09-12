@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { AssociateAlreadyExistsInUnityException } from '../../../common/exceptions';
 import { Associate } from '../entities/associate.entity';
-import { AssociateRepositoryInterface } from '../repositories/associate.repository.interface';
+import type { AssociateRepositoryInterface } from '../repositories/associate.repository.interface';
 import { CreateAssociateDto } from '../dto/create-associate.dto';
 
 @Injectable()

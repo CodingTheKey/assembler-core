@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { UnityNotFoundException } from '../../../common/exceptions';
-import { UnityRepositoryInterface } from '../repositories/unity.repository.interface';
+import type { UnityRepositoryInterface } from '../repositories/unity.repository.interface';
 
 @Injectable()
 export class DeleteUnityUseCase {

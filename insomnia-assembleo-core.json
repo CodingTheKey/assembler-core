@@ -1,0 +1,285 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "${DATE}",
+  "__export_source": "codex-cli:generated",
+  "resources": [
+    {
+      "_id": "wrk_assembleo_core",
+      "parentId": null,
+      "modified": 0,
+      "created": 0,
+      "name": "Assembleo Core",
+      "description": "Coleção gerada automaticamente com as rotas da API",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_assembleo_core_base",
+      "parentId": "wrk_assembleo_core",
+      "modified": 0,
+      "created": 0,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8787",
+        "associateId": "00000000-0000-0000-0000-000000000000",
+        "meetingId": "00000000-0000-0000-0000-000000000000",
+        "unityId": "00000000-0000-0000-0000-000000000000"
+      },
+      "dataPropertyOrder": null,
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 0,
+      "_type": "environment"
+    },
+    {
+      "_id": "req_associates_by_unity",
+      "parentId": "fld_associates",
+      "modified": 0,
+      "created": 0,
+      "name": "Get Associates by Unity",
+      "method": "GET",
+      "url": "{{ _.base_url }}/associates/unity/{{ _.unityId }}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -3,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_associate_update",
+      "parentId": "fld_associates",
+      "modified": 0,
+      "created": 0,
+      "name": "Update Associate",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/associates/{{ _.associateId }}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"id\": \"{{ _.associateId }}\",\n  \"name\": \"Fulano de Tal\",\n  \"address\": \"Rua das Flores, 123\",\n  \"email\": \"fulano@example.com\",\n  \"image\": null,\n  \"gender\": \"masculino\",\n  \"birthDate\": \"1990/01/01\",\n  \"nationality\": \"Brasileiro\",\n  \"placeOfBirth\": \"São Paulo\",\n  \"number\": \"123A\",\n  \"neighborhood\": \"Centro\",\n  \"city\": \"São Paulo\",\n  \"zipCode\": \"01000-000\",\n  \"cellPhone\": \"(11)99999-9999\",\n  \"rg\": \"1234567\",\n  \"cpf\": \"123.456.789-09\",\n  \"isSpecialNeeds\": false,\n  \"voterRegistrationNumber\": \"123456789\",\n  \"electoralZone\": \"001\",\n  \"electoralSection\": \"002\",\n  \"maritalStatus\": \"solteiro\",\n  \"associatedUnityName\": \"Unidade Central\",\n  \"unityId\": \"{{ _.unityId }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -4,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_associate_delete",
+      "parentId": "fld_associates",
+      "modified": 0,
+      "created": 0,
+      "name": "Delete Associate",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/associates/{{ _.associateId }}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "_type": "request"
+    },
+    
+    {
+      "_id": "fld_associates",
+      "parentId": "wrk_assembleo_core",
+      "modified": 0,
+      "created": 0,
+      "name": "Associates",
+      "description": "Rotas do módulo de Associates",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_associate_create",
+      "parentId": "fld_associates",
+      "modified": 0,
+      "created": 0,
+      "name": "Create Associate",
+      "method": "POST",
+      "url": "{{ _.base_url }}/associates",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Fulano de Tal\",\n  \"address\": \"Rua das Flores, 123\",\n  \"email\": \"fulano@example.com\",\n  \"image\": null,\n  \"gender\": \"masculino\",\n  \"birthDate\": \"1990/01/01\",\n  \"nationality\": \"Brasileiro\",\n  \"placeOfBirth\": \"São Paulo\",\n  \"number\": \"123A\",\n  \"neighborhood\": \"Centro\",\n  \"city\": \"São Paulo\",\n  \"zipCode\": \"01000-000\",\n  \"cellPhone\": \"(11)99999-9999\",\n  \"rg\": \"1234567\",\n  \"cpf\": \"123.456.789-09\",\n  \"isSpecialNeeds\": false,\n  \"voterRegistrationNumber\": \"123456789\",\n  \"electoralZone\": \"001\",\n  \"electoralSection\": \"002\",\n  \"maritalStatus\": \"solteiro\",\n  \"associatedUnityName\": \"Unidade Central\",\n  \"unityId\": \"{{ _.unityId }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -1,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_associate_get_by_id",
+      "parentId": "fld_associates",
+      "modified": 0,
+      "created": 0,
+      "name": "Get Associate by ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/associates/{{ _.associateId }}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -2,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "_type": "request"
+    },
+    
+    {
+      "_id": "fld_meetings",
+      "parentId": "wrk_assembleo_core",
+      "modified": 0,
+      "created": 0,
+      "name": "Meetings",
+      "description": "Rotas do módulo de Meetings",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -2,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_meeting_create",
+      "parentId": "fld_meetings",
+      "modified": 0,
+      "created": 0,
+      "name": "Create Meeting",
+      "method": "POST",
+      "url": "{{ _.base_url }}/meetings",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"title\": \"Reunião Geral\",\n  \"description\": \"Alinhamento das atividades\",\n  \"unityId\": \"{{ _.unityId }}\",\n  \"startDate\": \"2025-01-01T10:00:00.000Z\",\n  \"location\": \"Sala 1\",\n  \"status\": \"scheduled\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -1,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_meeting_get_by_id",
+      "parentId": "fld_meetings",
+      "modified": 0,
+      "created": 0,
+      "name": "Get Meeting by ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/meetings/{{ _.meetingId }}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -2,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "_type": "request"
+    },
+    
+    {
+      "_id": "fld_unities",
+      "parentId": "wrk_assembleo_core",
+      "modified": 0,
+      "created": 0,
+      "name": "Unities",
+      "description": "Rotas do módulo de Unities",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -3,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_unity_create",
+      "parentId": "fld_unities",
+      "modified": 0,
+      "created": 0,
+      "name": "Create Unity",
+      "method": "POST",
+      "url": "{{ _.base_url }}/unities",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Unidade Central\",\n  \"address\": \"Rua A, 123\",\n  \"logo\": null\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -1,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_unity_find_all",
+      "parentId": "fld_unities",
+      "modified": 0,
+      "created": 0,
+      "name": "Find All Unities",
+      "method": "GET",
+      "url": "{{ _.base_url }}/unities",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -2,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_unity_delete",
+      "parentId": "fld_unities",
+      "modified": 0,
+      "created": 0,
+      "name": "Delete Unity",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/unities/{{ _.unityId }}",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -3,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "_type": "request"
+    }
+  ]
+}

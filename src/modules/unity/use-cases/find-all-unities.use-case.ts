@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Unity } from '../entities/unity.entity';
-import { UnityRepositoryInterface } from '../repositories/unity.repository.interface';
+import type { UnityRepositoryInterface } from '../repositories/unity.repository.interface';
 
 @Injectable()
 export class FindAllUnitiesUseCase {

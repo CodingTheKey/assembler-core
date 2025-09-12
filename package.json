@@ -23,8 +23,10 @@
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@prisma/client": "^6.15.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "prisma": "^6.15.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
@@ -36,8 +38,10 @@
     "@nestjs/testing": "^11.0.1",
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
-    "@types/node": "^22.10.7",
+    "@types/node": "^22.18.1",
     "@types/supertest": "^6.0.2",
+    "csv-parse": "^6.1.0",
+    "dotenv": "^17.2.2",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
@@ -51,7 +55,8 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0"
+    "typescript-eslint": "^8.20.0",
+    "wrangler": "^4.34.0"
   },
   "jest": {
     "moduleFileExtensions": [

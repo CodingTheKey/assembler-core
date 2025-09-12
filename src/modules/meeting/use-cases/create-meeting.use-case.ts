@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Meeting } from '../entities/meeting.entity';
-import { MeetingRepositoryInterface } from '../repositories/meeting.repository.interface';
+import type { MeetingRepositoryInterface } from '../repositories/meeting.repository.interface';
 import { CreateMeetingDto } from '../dto/create-meeting.dto';
 
 @Injectable()

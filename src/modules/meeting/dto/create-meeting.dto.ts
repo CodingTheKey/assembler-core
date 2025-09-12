@@ -5,7 +5,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { MeetingStatus } from '../entities/meeting.entity';
+import type { MeetingStatus } from '../entities/meeting.entity';
 
 export class CreateMeetingDto {
   @IsString()

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AssociateController } from './controllers/associate.controller';
 import { CreateAssociateUseCase } from './use-cases/create-associate.use-case';
 import { FindAssociateByIdUseCase } from './use-cases/find-associate-by-id.use-case';
-import { AssociateRepositoryInterface } from './repositories/associate.repository.interface';
+import { AssociatePrismaRepository } from './repositories/associate.prisma.repository';
 
 @Module({
   controllers: [AssociateController],
@@ -11,9 +11,8 @@ import { AssociateRepositoryInterface } from './repositories/associate.repositor
     FindAssociateByIdUseCase,
     {
       provide: 'AssociateRepositoryInterface',
-      useValue: {}, // Replace with actual implementation
+      useClass: AssociatePrismaRepository,
     },
   ],
-  exports: [AssociateRepositoryInterface],
 })
 export class AssociateModule {}

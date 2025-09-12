@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Unity {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  address   String
+  logoUrl   String?  @map("logo_url")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  associates Associate[]
+  meetings   Meeting[]
+
+  @@map("unities")
+}
+
+model Associate {
+  id                      String   @id @default(cuid())
+  name                    String
+  address                 String
+  isActive                Boolean  @default(true) @map("is_active")
+  associatedUnityName     String   @map("associated_unity_name")
+  email                   String   @unique
+  urlImage                String?  @map("url_image")
+  gender                  String
+  birthDate               DateTime @map("birth_date")
+  nationality             String
+  placeOfBirth            String   @map("place_of_birth")
+  number                  String
+  neighborhood            String
+  city                    String
+  zipCode                 String   @map("zip_code")
+  cellPhone               String   @map("cell_phone")
+  rg                      String
+  cpf                     String   @unique
+  isSpecialNeeds          Boolean  @default(false) @map("is_special_needs")
+  voterRegistrationNumber String   @map("voter_registration_number")
+  electoralZone           String   @map("electoral_zone")
+  electoralSection        String   @map("electoral_section")
+  maritalStatus           String   @map("marital_status")
+  unityId                 String   @map("unity_id")
+  createdAt               DateTime @default(now()) @map("created_at")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+
+  unity        Unity                @relation(fields: [unityId], references: [id], onDelete: Cascade)
+  participants MeetingParticipant[]
+
+  @@map("associates")
+}
+
+model Meeting {
+  id          String        @id @default(cuid())
+  title       String
+  description String
+  unityId     String        @map("unity_id")
+  startDate   DateTime      @map("start_date")
+  location    String?
+  status      MeetingStatus @default(SCHEDULED)
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  unity        Unity                @relation(fields: [unityId], references: [id], onDelete: Cascade)
+  participants MeetingParticipant[]
+
+  @@map("meetings")
+}
+
+model MeetingParticipant {
+  id          String   @id @default(cuid())
+  meetingId   String   @map("meeting_id")
+  associateId String   @map("associate_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  meeting   Meeting   @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  associate Associate @relation(fields: [associateId], references: [id], onDelete: Cascade)
+
+  @@unique([meetingId, associateId])
+  @@map("meeting_participants")
+}
+
+enum MeetingStatus {
+  SCHEDULED
+  CANCELED
+  PAUSED
+  FINISHED
+}
