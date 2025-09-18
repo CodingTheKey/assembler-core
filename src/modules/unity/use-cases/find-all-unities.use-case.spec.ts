@@ -10,6 +10,7 @@ describe('FindAllUnitiesUseCase', () => {
       create: jest.fn(),
       findAll: jest.fn(),
       delete: jest.fn(),
+      findById: jest.fn(),
     };
 
     useCase = new FindAllUnitiesUseCase(unityRepository);
@@ -17,8 +18,8 @@ describe('FindAllUnitiesUseCase', () => {
 
   it('should return all unities', async () => {
     const expectedUnities = [
-      { id: '1', name: 'Unity 1', address: 'Address 1' },
-      { id: '2', name: 'Unity 2', address: 'Address 2' },
+      { id: '1', name: 'Unity 1', address: 'Address 1', logoUrl: 'Logo 1' },
+      { id: '2', name: 'Unity 2', address: 'Address 2', logoUrl: 'Logo 2' },
     ];
 
     unityRepository.findAll.mockResolvedValue(expectedUnities);

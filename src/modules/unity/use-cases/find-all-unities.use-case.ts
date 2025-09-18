@@ -1,5 +1,6 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { Unity } from '../entities/unity.entity';
+import { Inject, Injectable } from '@nestjs/common';
+import { OutputFindAllUnitiesDto } from '../dto/find-all-unities.dto';
+import { UnityMapper } from '../mappers/unity.mapper';
 import type { UnityRepositoryInterface } from '../repositories/unity.repository.interface';
 
 @Injectable()
@@ -9,7 +10,8 @@ export class FindAllUnitiesUseCase {
     private readonly unityRepository: UnityRepositoryInterface,
   ) {}
 
-  async execute(): Promise<Unity[]> {
-    return await this.unityRepository.findAll();
+  async execute(): Promise<OutputFindAllUnitiesDto> {
+    const unities = await this.unityRepository.findAll();
+    return UnityMapper.mapMany(unities);
   }
 }
