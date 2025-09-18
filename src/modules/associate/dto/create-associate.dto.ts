@@ -95,4 +95,8 @@ export class CreateAssociateDto {
 
   @IsString({ message: 'Informe o ID da unidade associada.' })
   unityId: string;
+
+  @IsOptional()
+  @IsString({ message: 'A URL da imagem deve ser uma string.' })
+  urlImage: string | null;
 }

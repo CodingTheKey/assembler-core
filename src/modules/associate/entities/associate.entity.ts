@@ -25,6 +25,7 @@ export class Associate extends BaseEntity {
     public electoralZone: string,
     public electoralSection: string,
     public maritalStatus: string,
+    public unityId: string,
   ) {
     super(_id);
   }

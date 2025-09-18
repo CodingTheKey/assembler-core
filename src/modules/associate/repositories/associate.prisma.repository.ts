@@ -32,7 +32,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
         electoralZone: associate.electoralZone,
         electoralSection: associate.electoralSection,
         maritalStatus: associate.maritalStatus,
-        unityId: associate.associatedUnityName, // Usando associatedUnityName como unityId temporariamente
+        unityId: associate.unityId,
       },
     });
   }
@@ -73,20 +73,14 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
       associate.electoralZone,
       associate.electoralSection,
       associate.maritalStatus,
+      associate.unityId,
     );
   }
 
-  async update(id: string, data: Partial<Associate>): Promise<void> {
+  async update(id: string, data: Associate): Promise<void> {
     await this.prisma.associate.update({
       where: { id },
-      data: {
-        ...(data.name && { name: data.name }),
-        ...(data.address && { address: data.address }),
-        ...(data.isActive !== undefined && { isActive: data.isActive }),
-        ...(data.email && { email: data.email }),
-        ...(data.cellPhone && { cellPhone: data.cellPhone }),
-        // Add other fields as needed
-      },
+      data,
     });
   }
 
@@ -130,6 +124,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
           associate.electoralZone,
           associate.electoralSection,
           associate.maritalStatus,
+          associate.unityId,
         ),
     );
   }
@@ -169,6 +164,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
           associate.electoralZone,
           associate.electoralSection,
           associate.maritalStatus,
+          associate.unityId,
         ),
     );
   }
@@ -215,6 +211,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
       associate.electoralZone,
       associate.electoralSection,
       associate.maritalStatus,
+      associate.unityId,
     );
   }
 }

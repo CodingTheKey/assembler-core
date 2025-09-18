@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AssociateAlreadyExistsInUnityException } from '../../../common/exceptions';
 import { CreateAssociateDto } from '../dto/create-associate.dto';
-import { Associate } from '../entities/associate.entity';
+import { AssociateFactory } from '../entities/associate.factory';
 import type { AssociateRepositoryInterface } from '../repositories/associate.repository.interface';
 
 @Injectable()
@@ -12,31 +12,31 @@ export class CreateAssociateUseCase {
   ) {}
 
   async execute(input: CreateAssociateDto): Promise<void> {
-    const associate = new Associate(
-      '',
-      input.name,
-      input.address,
-      true,
-      input.associatedUnityName,
-      input.email,
-      (input.image as string) || null,
-      input.gender,
-      input.birthDate,
-      input.nationality,
-      input.placeOfBirth,
-      input.number,
-      input.neighborhood,
-      input.city,
-      input.zipCode,
-      input.cellPhone,
-      input.rg,
-      input.cpf,
-      input.isSpecialNeeds,
-      input.voterRegistrationNumber,
-      input.electoralZone,
-      input.electoralSection,
-      input.maritalStatus,
-    );
+    const associate = AssociateFactory.create({
+      name: input.name,
+      address: input.address,
+      isActive: true,
+      associatedUnityName: input.associatedUnityName,
+      email: input.email,
+      urlImage: input.urlImage || null,
+      gender: input.gender,
+      birthDate: input.birthDate,
+      nationality: input.nationality,
+      placeOfBirth: input.placeOfBirth,
+      number: input.number,
+      neighborhood: input.neighborhood,
+      city: input.city,
+      zipCode: input.zipCode,
+      cellPhone: input.cellPhone,
+      rg: input.rg,
+      cpf: input.cpf,
+      isSpecialNeeds: input.isSpecialNeeds,
+      voterRegistrationNumber: input.voterRegistrationNumber,
+      electoralZone: input.electoralZone,
+      electoralSection: input.electoralSection,
+      maritalStatus: input.maritalStatus,
+      unityId: input.unityId,
+    });
 
     const existingAssociate =
       await this.associateRepository.findAssociateExistingAssociateInUnity(
