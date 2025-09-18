@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AssociateController } from './associate.controller';
 import { CreateAssociateUseCase } from '../use-cases/create-associate.use-case';
 import { FindAssociateByIdUseCase } from '../use-cases/find-associate-by-id.use-case';
+import { AssociateController } from './associate.controller';
 
 describe('AssociateController', () => {
   let controller: AssociateController;
@@ -67,7 +67,9 @@ describe('AssociateController', () => {
       const result = await controller.findById({ id: associateId });
 
       expect(result).toEqual(expectedResult);
-      expect(findAssociateByIdUseCase.execute).toHaveBeenCalledWith(associateId);
+      expect(findAssociateByIdUseCase.execute).toHaveBeenCalledWith(
+        associateId,
+      );
     });
   });
 });

@@ -104,31 +104,34 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
       orderBy: { createdAt: 'desc' },
     });
 
-    return associates.map(associate => new Associate(
-      associate.id,
-      associate.name,
-      associate.address,
-      associate.isActive,
-      associate.associatedUnityName,
-      associate.email,
-      associate.urlImage,
-      associate.gender,
-      associate.birthDate,
-      associate.nationality,
-      associate.placeOfBirth,
-      associate.number,
-      associate.neighborhood,
-      associate.city,
-      associate.zipCode,
-      associate.cellPhone,
-      associate.rg,
-      associate.cpf,
-      associate.isSpecialNeeds,
-      associate.voterRegistrationNumber,
-      associate.electoralZone,
-      associate.electoralSection,
-      associate.maritalStatus,
-    ));
+    return associates.map(
+      (associate) =>
+        new Associate(
+          associate.id,
+          associate.name,
+          associate.address,
+          associate.isActive,
+          associate.associatedUnityName,
+          associate.email,
+          associate.urlImage,
+          associate.gender,
+          associate.birthDate,
+          associate.nationality,
+          associate.placeOfBirth,
+          associate.number,
+          associate.neighborhood,
+          associate.city,
+          associate.zipCode,
+          associate.cellPhone,
+          associate.rg,
+          associate.cpf,
+          associate.isSpecialNeeds,
+          associate.voterRegistrationNumber,
+          associate.electoralZone,
+          associate.electoralSection,
+          associate.maritalStatus,
+        ),
+    );
   }
 
   async findByUnityId(unityId: string): Promise<Associate[]> {
@@ -140,31 +143,34 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
       orderBy: { createdAt: 'desc' },
     });
 
-    return associates.map(associate => new Associate(
-      associate.id,
-      associate.name,
-      associate.address,
-      associate.isActive,
-      associate.associatedUnityName,
-      associate.email,
-      associate.urlImage,
-      associate.gender,
-      associate.birthDate,
-      associate.nationality,
-      associate.placeOfBirth,
-      associate.number,
-      associate.neighborhood,
-      associate.city,
-      associate.zipCode,
-      associate.cellPhone,
-      associate.rg,
-      associate.cpf,
-      associate.isSpecialNeeds,
-      associate.voterRegistrationNumber,
-      associate.electoralZone,
-      associate.electoralSection,
-      associate.maritalStatus,
-    ));
+    return associates.map(
+      (associate) =>
+        new Associate(
+          associate.id,
+          associate.name,
+          associate.address,
+          associate.isActive,
+          associate.associatedUnityName,
+          associate.email,
+          associate.urlImage,
+          associate.gender,
+          associate.birthDate,
+          associate.nationality,
+          associate.placeOfBirth,
+          associate.number,
+          associate.neighborhood,
+          associate.city,
+          associate.zipCode,
+          associate.cellPhone,
+          associate.rg,
+          associate.cpf,
+          associate.isSpecialNeeds,
+          associate.voterRegistrationNumber,
+          associate.electoralZone,
+          associate.electoralSection,
+          associate.maritalStatus,
+        ),
+    );
   }
 
   async findAssociateExistingAssociateInUnity(
