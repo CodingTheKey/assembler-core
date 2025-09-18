@@ -5,7 +5,6 @@ export class AssociateFactory {
   static create(a: {
     name: string;
     address: string;
-    isActive: boolean;
     associatedUnityName: string;
     email: string;
     urlImage: string | null;
@@ -31,7 +30,7 @@ export class AssociateFactory {
       cuid(),
       a.name,
       a.address,
-      a.isActive,
+      true,
       a.associatedUnityName,
       a.email,
       a.urlImage,

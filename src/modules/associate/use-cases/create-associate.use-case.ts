@@ -15,7 +15,6 @@ export class CreateAssociateUseCase {
     const associate = AssociateFactory.create({
       name: input.name,
       address: input.address,
-      isActive: true,
       associatedUnityName: input.associatedUnityName,
       email: input.email,
       urlImage: input.urlImage || null,

@@ -34,7 +34,9 @@ export class EditAssociateDto {
   gender!: string;
 
   @IsDate({ message: 'Informe a data de nascimento.' })
-  @Matches(/^\d{4}\/\d{2}\/\d{2}$/, { message: 'A data deve estar no formato AAAA/MM/DD.' })
+  @Matches(/^\d{4}\/\d{2}\/\d{2}$/, {
+    message: 'A data deve estar no formato AAAA/MM/DD.',
+  })
   birthDate!: Date;
 
   @IsString({ message: 'Informe a nacionalidade.' })
@@ -44,7 +46,9 @@ export class EditAssociateDto {
   placeOfBirth!: string;
 
   @IsString({ message: 'Informe o número.' })
-  @Matches(/^[0-9A-Za-z]+$/, { message: 'O número deve conter apenas números e letras (ex: 123A)' })
+  @Matches(/^[0-9A-Za-z]+$/, {
+    message: 'O número deve conter apenas números e letras (ex: 123A)',
+  })
   number!: string;
 
   @IsString({ message: 'Informe o bairro.' })
@@ -54,18 +58,24 @@ export class EditAssociateDto {
   city!: string;
 
   @IsString({ message: 'Informe o CEP.' })
-  @Matches(/^\d{5}-?\d{3}$/, { message: 'O CEP deve estar no formato XXXXX-XXX.' })
+  @Matches(/^\d{5}-?\d{3}$/, {
+    message: 'O CEP deve estar no formato XXXXX-XXX.',
+  })
   zipCode!: string;
 
   @IsString({ message: 'Informe o celular.' })
-  @Matches(/^(\(\d{2}\)\s?)?\d{5}-?\d{4}$/, { message: 'Informe o celular no formato (XX)XXXXX-XXXX.' })
+  @Matches(/^(\(\d{2}\)\s?)?\d{5}-?\d{4}$/, {
+    message: 'Informe o celular no formato (XX)XXXXX-XXXX.',
+  })
   cellPhone!: string;
 
   @IsString({ message: 'Informe o RG.' })
   rg!: string;
 
   @IsString({ message: 'Informe o CPF.' })
-  @Matches(/^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$/, { message: 'Informe o CPF no formato XXX.XXX.XXX-XX.' })
+  @Matches(/^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$/, {
+    message: 'Informe o CPF no formato XXX.XXX.XXX-XX.',
+  })
   cpf!: string;
 
   @IsBoolean()
@@ -89,4 +99,3 @@ export class EditAssociateDto {
   @IsString({ message: 'Informe o ID da unidade associada.' })
   unityId!: string;
 }
-

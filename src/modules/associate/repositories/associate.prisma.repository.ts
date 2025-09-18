@@ -77,10 +77,34 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
     );
   }
 
-  async update(id: string, data: Associate): Promise<void> {
+  async update(associate: Associate): Promise<void> {
     await this.prisma.associate.update({
-      where: { id },
-      data,
+      where: { id: associate.id },
+      data: {
+        name: associate.name,
+        address: associate.address,
+        isActive: associate.isActive,
+        associatedUnityName: associate.associatedUnityName,
+        email: associate.email,
+        urlImage: associate.urlImage,
+        gender: associate.gender,
+        birthDate: associate.birthDate,
+        nationality: associate.nationality,
+        placeOfBirth: associate.placeOfBirth,
+        number: associate.number,
+        neighborhood: associate.neighborhood,
+        city: associate.city,
+        zipCode: associate.zipCode,
+        cellPhone: associate.cellPhone,
+        rg: associate.rg,
+        cpf: associate.cpf,
+        isSpecialNeeds: associate.isSpecialNeeds,
+        voterRegistrationNumber: associate.voterRegistrationNumber,
+        electoralZone: associate.electoralZone,
+        electoralSection: associate.electoralSection,
+        maritalStatus: associate.maritalStatus,
+        unityId: associate.unityId,
+      },
     });
   }
 

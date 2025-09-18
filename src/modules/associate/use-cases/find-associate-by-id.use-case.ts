@@ -1,6 +1,7 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AssociateNotFoundException } from '../../../common/exceptions';
-import { Associate } from '../entities/associate.entity';
+import { OutputAssociateByIdDto } from '../dto/associate-by-id.dto';
+import { AssociateMap } from '../mappers/associate.map';
 import type { AssociateRepositoryInterface } from '../repositories/associate.repository.interface';
 
 @Injectable()
@@ -10,7 +11,7 @@ export class FindAssociateByIdUseCase {
     private readonly associateRepository: AssociateRepositoryInterface,
   ) {}
 
-  async execute(id: string): Promise<Associate> {
+  async execute(id: string): Promise<OutputAssociateByIdDto> {
     const associate = await this.associateRepository.findById(id);
 
     if (!associate) {
@@ -19,6 +20,6 @@ export class FindAssociateByIdUseCase {
       });
     }
 
-    return associate;
+    return AssociateMap.map(associate);
   }
 }

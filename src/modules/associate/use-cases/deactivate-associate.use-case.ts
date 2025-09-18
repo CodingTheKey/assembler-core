@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AssociateNotFoundException } from '../../../common/exceptions';
 import type { AssociateRepositoryInterface } from '../repositories/associate.repository.interface';
 
@@ -17,7 +17,6 @@ export class DeactivateAssociateUseCase {
     }
 
     associate.deactivate();
-    await this.associateRepository.update(id, associate);
+    await this.associateRepository.update(associate);
   }
 }
-

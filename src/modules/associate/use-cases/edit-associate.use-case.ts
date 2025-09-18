@@ -1,7 +1,9 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AssociateNotFoundException } from '../../../common/exceptions';
-import type { AssociateRepositoryInterface } from '../repositories/associate.repository.interface';
 import { EditAssociateDto } from '../dto/edit-associate.dto';
+import { Associate } from '../entities/associate.entity';
+import { AssociateMap } from '../mappers/associate.map';
+import type { AssociateRepositoryInterface } from '../repositories/associate.repository.interface';
 
 @Injectable()
 export class EditAssociateUseCase {
@@ -17,29 +19,37 @@ export class EditAssociateUseCase {
       throw new AssociateNotFoundException({ associateId: input.id });
     }
 
-    await this.associateRepository.update(input.id, {
-      name: input.name,
-      address: input.address,
-      email: input.email,
-      urlImage: (input.image as string) || existing.urlImage,
-      gender: input.gender,
-      birthDate: input.birthDate,
-      nationality: input.nationality,
-      placeOfBirth: input.placeOfBirth,
-      number: input.number,
-      neighborhood: input.neighborhood,
-      city: input.city,
-      zipCode: input.zipCode,
-      cellPhone: input.cellPhone,
-      rg: input.rg,
-      cpf: input.cpf,
-      isSpecialNeeds: input.isSpecialNeeds,
-      voterRegistrationNumber: input.voterRegistrationNumber,
-      electoralZone: input.electoralZone,
-      electoralSection: input.electoralSection,
-      maritalStatus: input.maritalStatus,
-      associatedUnityName: input.associatedUnityName,
-    } as any);
+    const mappedExisting = AssociateMap.map(existing);
+
+    const assignedAssociates = Object.assign(mappedExisting, input);
+
+    const associate = new Associate(
+      input.id,
+      assignedAssociates.name,
+      assignedAssociates.address,
+      existing.isActive,
+      assignedAssociates.associatedUnityName,
+      assignedAssociates.email,
+      assignedAssociates.urlImage,
+      assignedAssociates.gender,
+      assignedAssociates.birthDate,
+      assignedAssociates.nationality,
+      assignedAssociates.placeOfBirth,
+      assignedAssociates.number,
+      assignedAssociates.neighborhood,
+      assignedAssociates.city,
+      assignedAssociates.zipCode,
+      assignedAssociates.cellPhone,
+      assignedAssociates.rg,
+      assignedAssociates.cpf,
+      assignedAssociates.isSpecialNeeds,
+      assignedAssociates.voterRegistrationNumber,
+      assignedAssociates.electoralZone,
+      assignedAssociates.electoralSection,
+      assignedAssociates.maritalStatus,
+      assignedAssociates.unityId,
+    );
+
+    await this.associateRepository.update(associate);
   }
 }
-

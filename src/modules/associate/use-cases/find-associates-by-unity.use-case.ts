@@ -1,6 +1,7 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { OutputAssociatesByUnityDto } from '../dto/associates-by-unity.dto';
+import { AssociateMap } from '../mappers/associate.map';
 import type { AssociateRepositoryInterface } from '../repositories/associate.repository.interface';
-import { Associate } from '../entities/associate.entity';
 
 @Injectable()
 export class FindAssociatesByUnityUseCase {
@@ -9,8 +10,9 @@ export class FindAssociatesByUnityUseCase {
     private readonly associateRepository: AssociateRepositoryInterface,
   ) {}
 
-  async execute(unityId: string): Promise<Associate[]> {
-    return await this.associateRepository.findByUnityId(unityId);
+  async execute(unityId: string): Promise<OutputAssociatesByUnityDto> {
+    const associate = await this.associateRepository.findByUnityId(unityId);
+
+    return AssociateMap.mapMany(associate);
   }
 }
-
