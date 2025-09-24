@@ -51,22 +51,42 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
       });
     }
 
-    const createdMeeting = await this.prisma.meeting.create({
-      data: {
-        title: meeting.title,
-        description: meeting.description,
-        unityId: meeting.unityId,
-        startDate: meeting.startDate,
-        location: meeting.location,
-        status: meeting.status.toUpperCase() as
-          | 'SCHEDULED'
-          | 'CANCELED'
-          | 'PAUSED'
-          | 'FINISHED',
-      },
-      include: {
-        unity: true,
-      },
+    const createdMeeting = await this.prisma.$transaction(async (tx) => {
+      const [newMeeting, unityParticipants] = await Promise.all([
+        tx.meeting.create({
+          data: {
+            title: meeting.title,
+            description: meeting.description,
+            unityId: meeting.unityId,
+            startDate: meeting.startDate,
+            location: meeting.location,
+            status: meeting.status.toUpperCase() as
+              | 'SCHEDULED'
+              | 'CANCELED'
+              | 'PAUSED'
+              | 'FINISHED',
+          },
+          include: {
+            unity: true,
+          },
+        }),
+        tx.associate.findMany({
+          where: { unityId: meeting.unityId },
+          select: { id: true },
+        }),
+      ]);
+
+      if (unityParticipants.length > 0) {
+        await tx.meetingParticipant.createMany({
+          data: unityParticipants.map((participant) => ({
+            meetingId: newMeeting.id,
+            associateId: participant.id,
+          })),
+          skipDuplicates: true,
+        });
+      }
+
+      return newMeeting;
     });
 
     return new Meeting(
