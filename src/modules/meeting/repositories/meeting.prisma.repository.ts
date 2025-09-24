@@ -37,8 +37,6 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
   }
 
   async create(meeting: Meeting): Promise<Meeting> {
-    console.log(meeting);
-
     if (!meeting.unityId) {
       throw new Error('Unity id is required');
     }
@@ -128,7 +126,7 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
     await this.prisma.meeting.update({
       where: { id: meeting.id },
       data: {
-        status: '',
+        status: 'STARTED',
       },
     });
   }
