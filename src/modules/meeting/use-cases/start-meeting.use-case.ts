@@ -9,6 +9,12 @@ export class StartMeetingUseCase {
   ) {}
 
   async execute(id: string): Promise<void> {
+    const meeting = await this.meetingRepository.findById(id);
+
+    if (!meeting) {
+      throw new Error('Meeting not found');
+    }
+
     await this.meetingRepository.startMeeting(id);
   }
 }
