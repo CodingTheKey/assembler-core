@@ -29,4 +29,29 @@ export class Meeting extends BaseEntity {
   get participantsList(): Associate[] {
     return this._participants;
   }
+
+  start(): void {
+    if (this.status !== 'scheduled') {
+      throw new Error('Only scheduled meetings can be started');
+    }
+    this.status = 'finished';
+  }
+
+  cancel(): void {
+    if (this.status === 'finished') {
+      throw new Error('Cannot cancel a finished meeting');
+    }
+    this.status = 'canceled';
+  }
+
+  pause(): void {
+    if (this.status !== 'scheduled') {
+      throw new Error('Only scheduled meetings can be paused');
+    }
+    this.status = 'paused';
+  }
+
+  isActive(): boolean {
+    return this.status === 'scheduled' || this.status === 'paused';
+  }
 }
