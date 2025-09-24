@@ -7,5 +7,5 @@ export interface MeetingRepositoryInterface {
   update(meeting: Meeting): Promise<Meeting>;
   delete(id: string): Promise<void>;
   countMeetings(): Promise<number>;
-  startMeeting(id: string): Promise<void>;
+  startMeeting(meeting: Meeting): Promise<void>;
 }

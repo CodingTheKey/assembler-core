@@ -89,6 +89,7 @@ model MeetingParticipant {
 enum MeetingStatus {
   SCHEDULED
   CANCELED
+  STARTED
   PAUSED
   FINISHED
 }

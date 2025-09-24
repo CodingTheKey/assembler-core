@@ -124,11 +124,11 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
     return await this.prisma.meeting.count();
   }
 
-  async startMeeting(id: string): Promise<void> {
+  async startMeeting(meeting: Meeting): Promise<void> {
     await this.prisma.meeting.update({
-      where: { id },
+      where: { id: meeting.id },
       data: {
-        status: 'SCHEDULED',
+        status: '',
       },
     });
   }
