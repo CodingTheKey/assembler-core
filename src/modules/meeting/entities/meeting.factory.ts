@@ -10,19 +10,16 @@ export class MeetingFactory {
     status?: MeetingStatus;
     unityId: string;
   }): Meeting {
-    const meeting = new Meeting(
+    return new Meeting(
       cuid(),
       m.title,
       m.description,
       null,
-      m.startDate,
+      new Date(m.startDate),
       m.location,
       m.status || 'scheduled',
+      m.unityId,
     );
-
-    meeting.unityId = m.unityId;
-
-    return meeting;
   }
 
   static instantiate(
@@ -34,6 +31,7 @@ export class MeetingFactory {
       startDate: Date;
       location: string;
       status: MeetingStatus;
+      unityId?: string;
     },
   ): Meeting {
     return new Meeting(
@@ -44,6 +42,7 @@ export class MeetingFactory {
       m.startDate,
       m.location,
       m.status,
+      m.unityId,
     );
   }
 }

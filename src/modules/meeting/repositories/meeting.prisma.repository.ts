@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { UnityNotFoundException } from 'src/common/exceptions';
 import { PrismaService } from '../../../database/prisma.service';
 import { Meeting, MeetingStatus } from '../entities/meeting.entity';
 import type { MeetingRepositoryInterface } from './meeting.repository.interface';
@@ -30,11 +31,28 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
           meeting.startDate,
           meeting.location || '',
           meeting.status.toLowerCase() as MeetingStatus,
+          meeting.unityId,
         ),
     );
   }
 
   async create(meeting: Meeting): Promise<Meeting> {
+    console.log(meeting);
+
+    if (!meeting.unityId) {
+      throw new Error('Unity id is required');
+    }
+
+    const unity = await this.prisma.unity.findUnique({
+      where: { id: meeting.unityId },
+    });
+
+    if (!unity) {
+      throw new UnityNotFoundException({
+        unityId: meeting.unityId,
+      });
+    }
+
     const createdMeeting = await this.prisma.meeting.create({
       data: {
         title: meeting.title,
@@ -61,6 +79,7 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
       createdMeeting.startDate,
       createdMeeting.location || '',
       createdMeeting.status.toLowerCase() as MeetingStatus,
+      createdMeeting.unityId,
     );
   }
 
@@ -91,6 +110,7 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
       updatedMeeting.startDate,
       updatedMeeting.location || '',
       updatedMeeting.status.toLowerCase() as MeetingStatus,
+      updatedMeeting.unityId,
     );
   }
 
@@ -138,6 +158,7 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
       meeting.startDate,
       meeting.location || '',
       meeting.status.toLowerCase() as MeetingStatus,
+      meeting.unityId,
     );
   }
 }

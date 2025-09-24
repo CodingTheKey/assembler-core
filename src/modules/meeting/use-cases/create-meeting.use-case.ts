@@ -12,6 +12,7 @@ export class CreateMeetingUseCase {
   ) {}
 
   async execute(input: CreateMeetingDto): Promise<Meeting> {
+    console.log(input);
     const meeting = MeetingFactory.create({
       title: input.title,
       description: input.description,
@@ -19,7 +20,6 @@ export class CreateMeetingUseCase {
       location: input.location,
       unityId: input.unityId,
     });
-
     return await this.meetingRepository.create(meeting);
   }
 }

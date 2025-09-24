@@ -5,7 +5,6 @@ export type MeetingStatus = 'scheduled' | 'canceled' | 'paused' | 'finished';
 
 export class Meeting extends BaseEntity {
   private _participants: Associate[] = [];
-  public unityId: string;
 
   constructor(
     protected readonly _id: string,
@@ -15,6 +14,7 @@ export class Meeting extends BaseEntity {
     public startDate: Date,
     public location: string,
     public status: MeetingStatus,
+    public unityId?: string,
   ) {
     super(_id);
   }
