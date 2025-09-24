@@ -5,30 +5,37 @@ export class MeetingFactory {
   static create(m: {
     title: string;
     description: string;
-    unityName: string;
     startDate: Date;
     location: string;
     status?: MeetingStatus;
+    unityId: string;
   }): Meeting {
-    return new Meeting(
+    const meeting = new Meeting(
       cuid(),
       m.title,
       m.description,
-      m.unityName,
+      null,
       m.startDate,
       m.location,
       m.status || 'scheduled',
     );
+
+    meeting.unityId = m.unityId;
+
+    return meeting;
   }
 
-  static createWithId(id: string, m: {
-    title: string;
-    description: string;
-    unityName: string;
-    startDate: Date;
-    location: string;
-    status: MeetingStatus;
-  }): Meeting {
+  static instantiate(
+    id: string,
+    m: {
+      title: string;
+      description: string;
+      unityName: string;
+      startDate: Date;
+      location: string;
+      status: MeetingStatus;
+    },
+  ): Meeting {
     return new Meeting(
       id,
       m.title,

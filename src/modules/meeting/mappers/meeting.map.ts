@@ -18,9 +18,9 @@ export class MeetingMap {
       id: meeting.id,
       title: meeting.title,
       description: meeting.description,
-      unityName: meeting.unityName,
+      unityName: meeting.unityName || '',
       startDate: meeting.startDate,
-      location: meeting.location,
+      location: meeting.location || '',
       status: meeting.status,
     };
   }

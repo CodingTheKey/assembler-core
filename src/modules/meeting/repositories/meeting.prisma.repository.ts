@@ -20,30 +20,33 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
       orderBy: { createdAt: 'desc' },
     });
 
-    return meetings.map(meeting => new Meeting(
-      meeting.id,
-      meeting.title,
-      meeting.description,
-      meeting.unity.name,
-      meeting.startDate,
-      meeting.location || '',
-      meeting.status.toLowerCase() as MeetingStatus,
-    ));
+    return meetings.map(
+      (meeting) =>
+        new Meeting(
+          meeting.id,
+          meeting.title,
+          meeting.description,
+          meeting.unity.name,
+          meeting.startDate,
+          meeting.location || '',
+          meeting.status.toLowerCase() as MeetingStatus,
+        ),
+    );
   }
 
   async create(meeting: Meeting): Promise<Meeting> {
-    const unity = await this.prisma.unity.findUnique({
-      where: { id: meeting.unityName }, // unityName is used as unityId in the entity
-    });
-
     const createdMeeting = await this.prisma.meeting.create({
       data: {
         title: meeting.title,
         description: meeting.description,
-        unityId: meeting.unityName, // unityName is used as unityId
+        unityId: meeting.unityId,
         startDate: meeting.startDate,
         location: meeting.location,
-        status: meeting.status.toUpperCase() as 'SCHEDULED' | 'CANCELED' | 'PAUSED' | 'FINISHED',
+        status: meeting.status.toUpperCase() as
+          | 'SCHEDULED'
+          | 'CANCELED'
+          | 'PAUSED'
+          | 'FINISHED',
       },
       include: {
         unity: true,
@@ -69,7 +72,11 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
         description: meeting.description,
         startDate: meeting.startDate,
         location: meeting.location,
-        status: meeting.status.toUpperCase() as 'SCHEDULED' | 'CANCELED' | 'PAUSED' | 'FINISHED',
+        status: meeting.status.toUpperCase() as
+          | 'SCHEDULED'
+          | 'CANCELED'
+          | 'PAUSED'
+          | 'FINISHED',
       },
       include: {
         unity: true,

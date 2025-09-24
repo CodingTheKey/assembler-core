@@ -5,12 +5,13 @@ export type MeetingStatus = 'scheduled' | 'canceled' | 'paused' | 'finished';
 
 export class Meeting extends BaseEntity {
   private _participants: Associate[] = [];
+  public unityId: string;
 
   constructor(
     protected readonly _id: string,
     public title: string,
     public description: string,
-    public unityName: string,
+    public unityName: string | null,
     public startDate: Date,
     public location: string,
     public status: MeetingStatus,
