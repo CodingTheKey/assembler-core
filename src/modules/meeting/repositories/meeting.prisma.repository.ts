@@ -57,7 +57,7 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
           data: {
             title: meeting.title,
             description: meeting.description,
-            unityId: meeting.unityId,
+            unityId: meeting.unityId || '',
             startDate: meeting.startDate,
             location: meeting.location,
             status: meeting.status.toUpperCase() as
@@ -67,7 +67,9 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
               | 'FINISHED',
           },
           include: {
-            unity: true,
+            unity: {
+              select: { name: true },
+            },
           },
         }),
         tx.associate.findMany({
