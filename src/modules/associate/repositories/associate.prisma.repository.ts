@@ -33,7 +33,6 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
         electoralSection: associate.electoralSection,
         maritalStatus: associate.maritalStatus,
         unityId: associate.unityId,
-        deletedAt: associate.deletedAt,
       },
     });
   }
@@ -106,14 +105,16 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
         electoralSection: associate.electoralSection,
         maritalStatus: associate.maritalStatus,
         unityId: associate.unityId,
-        deletedAt: associate.deletedAt,
       },
     });
   }
 
   async delete(id: string): Promise<void> {
-    await this.prisma.associate.delete({
+    await this.prisma.associate.update({
       where: { id },
+      data: {
+        deletedAt: new Date(),
+      },
     });
   }
 
