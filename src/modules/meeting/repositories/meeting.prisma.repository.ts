@@ -19,7 +19,7 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
           },
         },
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { unity: { name: 'asc' } },
     });
 
     return meetings.map(
@@ -163,6 +163,7 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
           include: {
             associate: true,
           },
+          orderBy: { associate: { name: 'asc' } },
         },
       },
     });
