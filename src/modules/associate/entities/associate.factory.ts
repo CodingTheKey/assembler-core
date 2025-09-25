@@ -51,6 +51,7 @@ export class AssociateFactory {
       a.electoralSection,
       a.maritalStatus,
       a.unityId,
+      null,
     );
   }
 }

@@ -48,6 +48,7 @@ export class EditAssociateUseCase {
       assignedAssociates.electoralSection,
       assignedAssociates.maritalStatus,
       assignedAssociates.unityId,
+      existing.deletedAt,
     );
 
     await this.associateRepository.update(associate);

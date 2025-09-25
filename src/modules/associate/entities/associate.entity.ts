@@ -26,11 +26,13 @@ export class Associate extends BaseEntity {
     public electoralSection: string,
     public maritalStatus: string,
     public unityId: string,
+    public deletedAt: Date | null = null,
   ) {
     super(_id);
   }
 
   deactivate(): void {
     this.isActive = false;
+    this.deletedAt = new Date();
   }
 }

@@ -31,4 +31,5 @@ export type OutputAssociatesByUnityDto = {
   maritalStatus: string | null;
   associatedUnityName: string;
   unityId: string;
+  deletedAt: Date | null;
 }[];

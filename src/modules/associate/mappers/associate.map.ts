@@ -23,6 +23,7 @@ type MappedAssociate = {
   maritalStatus: string | null;
   associatedUnityName: string;
   unityId: string;
+  deletedAt: Date | null;
 };
 
 export class AssociateMap {
@@ -52,6 +53,7 @@ export class AssociateMap {
       maritalStatus: associate.maritalStatus,
       associatedUnityName: associate.associatedUnityName,
       unityId: associate.unityId,
+      deletedAt: associate.deletedAt,
     };
   }
 

@@ -189,7 +189,7 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
           p.associate.id,
           p.associate.name,
           p.associate.address,
-          true,
+          p.associate.isActive,
           p.associate.associatedUnityName,
           p.associate.email,
           p.associate.urlImage,
@@ -210,6 +210,7 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
           p.associate.electoralSection,
           p.associate.maritalStatus,
           p.associate.unityId,
+          p.associate.deletedAt,
         ),
       );
     });

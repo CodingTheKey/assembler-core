@@ -33,6 +33,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
         electoralSection: associate.electoralSection,
         maritalStatus: associate.maritalStatus,
         unityId: associate.unityId,
+        deletedAt: associate.deletedAt,
       },
     });
   }
@@ -74,6 +75,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
       associate.electoralSection,
       associate.maritalStatus,
       associate.unityId,
+      associate.deletedAt,
     );
   }
 
@@ -104,6 +106,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
         electoralSection: associate.electoralSection,
         maritalStatus: associate.maritalStatus,
         unityId: associate.unityId,
+        deletedAt: associate.deletedAt,
       },
     });
   }
@@ -149,6 +152,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
           associate.electoralSection,
           associate.maritalStatus,
           associate.unityId,
+          associate.deletedAt,
         ),
     );
   }
@@ -189,6 +193,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
           associate.electoralSection,
           associate.maritalStatus,
           associate.unityId,
+          associate.deletedAt,
         ),
     );
   }
@@ -236,6 +241,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
       associate.electoralSection,
       associate.maritalStatus,
       associate.unityId,
+      associate.deletedAt,
     );
   }
 }

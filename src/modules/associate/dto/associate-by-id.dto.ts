@@ -30,4 +30,5 @@ export class OutputAssociateByIdDto {
   electoralSection: string | null;
   maritalStatus: string | null;
   unityId: string;
+  deletedAt: Date | null;
 }
