@@ -1,3 +1,4 @@
+import { AssociateMap } from 'src/modules/associate/mappers/associate.map';
 import { Meeting, MeetingStatus } from '../entities/meeting.entity';
 
 type MappedMeeting = {
@@ -10,6 +11,32 @@ type MappedMeeting = {
   status: MeetingStatus;
   createdAt?: Date;
   updatedAt?: Date;
+  participants: Array<{
+    id: string;
+    name: string;
+    isActive: boolean;
+    address: string;
+    email: string;
+    urlImage: string | null;
+    gender: string | null;
+    birthDate: Date | null;
+    nationality: string | null;
+    placeOfBirth: string | null;
+    number: string | null;
+    neighborhood: string | null;
+    city: string | null;
+    zipCode: string | null;
+    cellPhone: string | null;
+    rg: string | null;
+    cpf: string;
+    isSpecialNeeds: boolean;
+    voterRegistrationNumber: string | null;
+    electoralZone: string | null;
+    electoralSection: string | null;
+    maritalStatus: string | null;
+    associatedUnityName: string;
+    unityId: string;
+  }>;
 };
 
 export class MeetingMap {
@@ -22,6 +49,7 @@ export class MeetingMap {
       startDate: meeting.startDate,
       location: meeting.location || '',
       status: meeting.status,
+      participants: AssociateMap.mapMany(meeting.participantsList),
     };
   }
 

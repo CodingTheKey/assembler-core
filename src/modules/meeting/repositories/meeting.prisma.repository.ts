@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UnityNotFoundException } from 'src/common/exceptions';
+import { Associate } from 'src/modules/associate/entities/associate.entity';
 import { PrismaService } from '../../../database/prisma.service';
 import { Meeting, MeetingStatus } from '../entities/meeting.entity';
 import type { MeetingRepositoryInterface } from './meeting.repository.interface';
@@ -154,7 +155,7 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
   }
 
   async findById(id: string): Promise<Meeting | null> {
-    const meeting = await this.prisma.meeting.findUnique({
+    const result = await this.prisma.meeting.findUnique({
       where: { id },
       include: {
         unity: true,
@@ -166,19 +167,52 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
       },
     });
 
-    if (!meeting) {
+    if (!result) {
       return null;
     }
 
-    return new Meeting(
-      meeting.id,
-      meeting.title,
-      meeting.description,
-      meeting.unity.name,
-      meeting.startDate,
-      meeting.location || '',
-      meeting.status.toLowerCase() as MeetingStatus,
-      meeting.unityId,
+    const meeting = new Meeting(
+      result.id,
+      result.title,
+      result.description,
+      result.unity.name,
+      result.startDate,
+      result.location || '',
+      result.status.toLowerCase() as MeetingStatus,
+      result.unityId,
     );
+
+    result.participants.forEach((p) => {
+      meeting.addParticipant(
+        new Associate(
+          p.associate.id,
+          p.associate.name,
+          p.associate.address,
+          true,
+          p.associate.associatedUnityName,
+          p.associate.email,
+          p.associate.urlImage,
+          p.associate.gender,
+          p.associate.birthDate,
+          p.associate.nationality,
+          p.associate.placeOfBirth,
+          p.associate.number,
+          p.associate.neighborhood,
+          p.associate.city,
+          p.associate.zipCode,
+          p.associate.cellPhone,
+          p.associate.rg,
+          p.associate.cpf,
+          p.associate.isSpecialNeeds,
+          p.associate.voterRegistrationNumber,
+          p.associate.electoralZone,
+          p.associate.electoralSection,
+          p.associate.maritalStatus,
+          p.associate.unityId,
+        ),
+      );
+    });
+
+    return meeting;
   }
 }
