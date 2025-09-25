@@ -16,6 +16,7 @@ import { FindAssociateByIdUseCase } from '../use-cases/find-associate-by-id.use-
 import { FindAssociatesByUnityUseCase } from '../use-cases/find-associates-by-unity.use-case';
 import { EditAssociateUseCase } from '../use-cases/edit-associate.use-case';
 import { DeactivateAssociateUseCase } from '../use-cases/deactivate-associate.use-case';
+import { DeleteAssociateUseCase } from '../use-cases/delete-associate.use-case';
 import { AssociatesByUnityDto } from '../dto/associates-by-unity.dto';
 import { EditAssociateDto } from '../dto/edit-associate.dto';
 import { DeleteAssociateDto } from '../dto/delete-associate.dto';
@@ -28,6 +29,7 @@ export class AssociateController {
     private readonly findAssociatesByUnityUseCase: FindAssociatesByUnityUseCase,
     private readonly editAssociateUseCase: EditAssociateUseCase,
     private readonly deactivateAssociateUseCase: DeactivateAssociateUseCase,
+    private readonly deleteAssociateUseCase: DeleteAssociateUseCase,
   ) {}
 
   @Post()
@@ -58,5 +60,11 @@ export class AssociateController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param() params: DeleteAssociateDto): Promise<void> {
     await this.deactivateAssociateUseCase.execute(params.id);
+  }
+
+  @Delete(':id/permanent')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deletePermanently(@Param() params: DeleteAssociateDto): Promise<void> {
+    await this.deleteAssociateUseCase.execute(params.id);
   }
 }

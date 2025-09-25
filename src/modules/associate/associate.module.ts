@@ -5,6 +5,7 @@ import { FindAssociateByIdUseCase } from './use-cases/find-associate-by-id.use-c
 import { FindAssociatesByUnityUseCase } from './use-cases/find-associates-by-unity.use-case';
 import { EditAssociateUseCase } from './use-cases/edit-associate.use-case';
 import { DeactivateAssociateUseCase } from './use-cases/deactivate-associate.use-case';
+import { DeleteAssociateUseCase } from './use-cases/delete-associate.use-case';
 import { AssociatePrismaRepository } from './repositories/associate.prisma.repository';
 
 @Module({
@@ -15,6 +16,7 @@ import { AssociatePrismaRepository } from './repositories/associate.prisma.repos
     FindAssociatesByUnityUseCase,
     EditAssociateUseCase,
     DeactivateAssociateUseCase,
+    DeleteAssociateUseCase,
     {
       provide: 'AssociateRepositoryInterface',
       useClass: AssociatePrismaRepository,
