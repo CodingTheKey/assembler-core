@@ -39,7 +39,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
 
   async findById(id: string): Promise<Associate | null> {
     const associate = await this.prisma.associate.findUnique({
-      where: { id },
+      where: { id, deletedAt: null },
       include: {
         unity: true,
       },
@@ -120,6 +120,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
 
   async findAll(): Promise<Associate[]> {
     const associates = await this.prisma.associate.findMany({
+      where: { deletedAt: null },
       include: {
         unity: true,
       },
@@ -160,7 +161,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
 
   async findByUnityId(unityId: string): Promise<Associate[]> {
     const associates = await this.prisma.associate.findMany({
-      where: { unityId },
+      where: { unityId, deletedAt: null },
       include: {
         unity: true,
       },
@@ -207,6 +208,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
       where: {
         cpf,
         unityId,
+        deletedAt: null,
       },
       include: {
         unity: true,
