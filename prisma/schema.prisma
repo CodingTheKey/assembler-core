@@ -23,32 +23,32 @@ model Unity {
 }
 
 model Associate {
-  id                      String   @id @default(cuid())
+  id                      String    @id @default(cuid())
   name                    String
   address                 String
-  isActive                Boolean  @default(true) @map("is_active")
-  associatedUnityName     String   @map("associated_unity_name")
-  email                   String   @unique
-  urlImage                String?  @map("url_image")
+  isActive                Boolean   @default(true) @map("is_active")
+  associatedUnityName     String    @map("associated_unity_name")
+  email                   String
+  urlImage                String?   @map("url_image")
   gender                  String
-  birthDate               DateTime @map("birth_date")
+  birthDate               DateTime  @map("birth_date")
   nationality             String
-  placeOfBirth            String   @map("place_of_birth")
+  placeOfBirth            String    @map("place_of_birth")
   number                  String
   neighborhood            String
   city                    String
-  zipCode                 String   @map("zip_code")
-  cellPhone               String   @map("cell_phone")
+  zipCode                 String    @map("zip_code")
+  cellPhone               String    @map("cell_phone")
   rg                      String
-  cpf                     String   @unique
-  isSpecialNeeds          Boolean  @default(false) @map("is_special_needs")
-  voterRegistrationNumber String   @map("voter_registration_number")
-  electoralZone           String   @map("electoral_zone")
-  electoralSection        String   @map("electoral_section")
-  maritalStatus           String   @map("marital_status")
-  unityId                 String   @map("unity_id")
-  createdAt               DateTime @default(now()) @map("created_at")
-  updatedAt               DateTime @updatedAt @map("updated_at")
+  cpf                     String    @unique
+  isSpecialNeeds          Boolean   @default(false) @map("is_special_needs")
+  voterRegistrationNumber String    @map("voter_registration_number")
+  electoralZone           String    @map("electoral_zone")
+  electoralSection        String    @map("electoral_section")
+  maritalStatus           String    @map("marital_status")
+  unityId                 String    @map("unity_id")
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
   deletedAt               DateTime? @map("deleted_at")
 
   unity        Unity                @relation(fields: [unityId], references: [id], onDelete: Cascade)
