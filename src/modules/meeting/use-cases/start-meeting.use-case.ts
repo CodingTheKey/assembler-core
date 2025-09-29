@@ -9,7 +9,7 @@ export class StartMeetingUseCase {
     private readonly meetingRepository: MeetingRepositoryInterface,
   ) {}
 
-  async execute(id: string): Promise<void> {
+  async execute(id: string): Promise<{ success: boolean }> {
     const meeting = await this.meetingRepository.findById(id);
 
     if (!meeting) {
@@ -21,5 +21,9 @@ export class StartMeetingUseCase {
     meeting?.start();
 
     await this.meetingRepository.startMeeting(meeting);
+
+    return {
+      success: true,
+    };
   }
 }
