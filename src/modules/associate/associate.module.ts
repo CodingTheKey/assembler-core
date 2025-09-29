@@ -8,6 +8,7 @@ import { DeleteAssociateUseCase } from './use-cases/delete-associate.use-case';
 import { EditAssociateUseCase } from './use-cases/edit-associate.use-case';
 import { FindAssociateByIdUseCase } from './use-cases/find-associate-by-id.use-case';
 import { FindAssociatesByUnityUseCase } from './use-cases/find-associates-by-unity.use-case';
+import { GenerateAssociatePdfUseCase } from './use-cases/generate-associate-pdf.use-case';
 
 @Module({
   imports: [StorageModule],
@@ -19,6 +20,7 @@ import { FindAssociatesByUnityUseCase } from './use-cases/find-associates-by-uni
     EditAssociateUseCase,
     DeactivateAssociateUseCase,
     DeleteAssociateUseCase,
+    GenerateAssociatePdfUseCase,
     {
       provide: 'AssociateRepositoryInterface',
       useClass: AssociatePrismaRepository,

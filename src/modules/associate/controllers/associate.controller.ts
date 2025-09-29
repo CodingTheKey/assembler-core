@@ -6,12 +6,15 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
   Param,
   Post,
   Put,
+  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
+import type { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { AssociateByIdDto } from '../dto/associate-by-id.dto';
@@ -25,6 +28,8 @@ import { DeleteAssociateUseCase } from '../use-cases/delete-associate.use-case';
 import { EditAssociateUseCase } from '../use-cases/edit-associate.use-case';
 import { FindAssociateByIdUseCase } from '../use-cases/find-associate-by-id.use-case';
 import { FindAssociatesByUnityUseCase } from '../use-cases/find-associates-by-unity.use-case';
+import { GenerateAssociatePdfUseCase } from '../use-cases/generate-associate-pdf.use-case';
+import { Associate } from '../entities/associate.entity';
 
 @Controller('associates')
 export class AssociateController {
@@ -35,6 +40,7 @@ export class AssociateController {
     private readonly editAssociateUseCase: EditAssociateUseCase,
     private readonly deactivateAssociateUseCase: DeactivateAssociateUseCase,
     private readonly deleteAssociateUseCase: DeleteAssociateUseCase,
+    private readonly generateAssociatePdfUseCase: GenerateAssociatePdfUseCase,
   ) {}
 
   @Post()
@@ -102,5 +108,58 @@ export class AssociateController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async deletePermanently(@Param() params: DeleteAssociateDto): Promise<void> {
     await this.deleteAssociateUseCase.execute(params.id);
+  }
+
+  @Get(':id/pdf')
+  async generatePdf(
+    @Param() params: AssociateByIdDto,
+    @Res() res: Response,
+  ): Promise<void> {
+    const associateData = await this.findAssociateByIdUseCase.execute(
+      params.id,
+    );
+
+    if (!associateData) {
+      throw new NotFoundException('Associate not found');
+    }
+
+    // Converter DTO para entidade Associate
+    const associate = new Associate(
+      associateData.id,
+      associateData.name,
+      associateData.address,
+      associateData.isActive,
+      associateData.associatedUnityName,
+      associateData.email,
+      associateData.urlImage,
+      associateData.gender || '',
+      associateData.birthDate || new Date(),
+      associateData.nationality || '',
+      associateData.placeOfBirth || '',
+      associateData.number || '',
+      associateData.neighborhood || '',
+      associateData.city || '',
+      associateData.zipCode || '',
+      associateData.cellPhone || '',
+      associateData.rg || '',
+      associateData.cpf,
+      associateData.isSpecialNeeds,
+      associateData.voterRegistrationNumber || '',
+      associateData.electoralZone || '',
+      associateData.electoralSection || '',
+      associateData.maritalStatus || '',
+      associateData.unityId,
+      associateData.deletedAt,
+    );
+
+    const pdfBytes = await this.generateAssociatePdfUseCase.execute(associate);
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="associate-${associate.id}.pdf"`,
+      'Content-Length': pdfBytes.length.toString(),
+    });
+
+    res.end(Buffer.from(pdfBytes));
   }
 }
