@@ -175,7 +175,7 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
 
     if (search) {
       filters.push(
-        { name: { contains: search, mode: 'default' } },
+        { name: { like: search, mode: 'default' } },
         { cpf: { contains: search, mode: 'default' } },
         { email: { contains: search, mode: 'default' } },
         { cellPhone: { contains: search, mode: 'default' } },
@@ -186,7 +186,11 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
       where: {
         unityId,
         deletedAt: null,
-        AND: filters,
+        AND: [
+          {
+            OR: filters,
+          },
+        ],
       },
       include: {
         unity: true,
