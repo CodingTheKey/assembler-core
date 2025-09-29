@@ -10,18 +10,20 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import type { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
+import type { Response } from 'express';
 import { memoryStorage } from 'multer';
 import { AssociateByIdDto } from '../dto/associate-by-id.dto';
 import { AssociatesByUnityDto } from '../dto/associates-by-unity.dto';
 import { CreateAssociateDto } from '../dto/create-associate.dto';
 import { DeleteAssociateDto } from '../dto/delete-associate.dto';
 import { EditAssociateDto } from '../dto/edit-associate.dto';
+import { Associate } from '../entities/associate.entity';
 import { CreateAssociateUseCase } from '../use-cases/create-associate.use-case';
 import { DeactivateAssociateUseCase } from '../use-cases/deactivate-associate.use-case';
 import { DeleteAssociateUseCase } from '../use-cases/delete-associate.use-case';
@@ -29,7 +31,6 @@ import { EditAssociateUseCase } from '../use-cases/edit-associate.use-case';
 import { FindAssociateByIdUseCase } from '../use-cases/find-associate-by-id.use-case';
 import { FindAssociatesByUnityUseCase } from '../use-cases/find-associates-by-unity.use-case';
 import { GenerateAssociatePdfUseCase } from '../use-cases/generate-associate-pdf.use-case';
-import { Associate } from '../entities/associate.entity';
 
 @Controller('associates')
 export class AssociateController {
@@ -86,8 +87,14 @@ export class AssociateController {
   }
 
   @Get('unity/:unityId')
-  async findByUnity(@Param() params: AssociatesByUnityDto) {
-    return await this.findAssociatesByUnityUseCase.execute(params.unityId);
+  async findByUnity(
+    @Param() params: AssociatesByUnityDto,
+    @Query('search') search,
+  ) {
+    return await this.findAssociatesByUnityUseCase.execute(
+      params.unityId,
+      search,
+    );
   }
 
   @Put(':id')

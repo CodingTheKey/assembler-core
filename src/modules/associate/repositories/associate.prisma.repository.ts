@@ -170,9 +170,18 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
     );
   }
 
-  async findByUnityId(unityId: string): Promise<Associate[]> {
+  async findByUnityId(unityId: string, search?: string): Promise<Associate[]> {
     const associates = await this.prisma.associate.findMany({
-      where: { unityId, deletedAt: null },
+      where: {
+        unityId,
+        deletedAt: null,
+        OR: [
+          { name: { contains: search, mode: 'insensitive' } },
+          { cpf: { contains: search, mode: 'insensitive' } },
+          { email: { contains: search, mode: 'insensitive' } },
+          { cellPhone: { contains: search, mode: 'insensitive' } },
+        ],
+      },
       include: {
         unity: true,
       },

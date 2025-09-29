@@ -6,7 +6,7 @@ export interface AssociateRepositoryInterface {
   update(associate: Partial<Associate>): Promise<void>;
   delete(id: string): Promise<void>;
   findAll(): Promise<Associate[]>;
-  findByUnityId(unityId: string): Promise<Associate[]>;
+  findByUnityId(unityId: string, search?: string): Promise<Associate[]>;
   findAssociateExistingAssociateInUnity(
     cpf: string,
     unityId: string,

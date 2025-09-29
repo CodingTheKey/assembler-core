@@ -10,8 +10,14 @@ export class FindAssociatesByUnityUseCase {
     private readonly associateRepository: AssociateRepositoryInterface,
   ) {}
 
-  async execute(unityId: string): Promise<OutputAssociatesByUnityDto> {
-    const associate = await this.associateRepository.findByUnityId(unityId);
+  async execute(
+    unityId: string,
+    search: string,
+  ): Promise<OutputAssociatesByUnityDto> {
+    const associate = await this.associateRepository.findByUnityId(
+      unityId,
+      search,
+    );
 
     return AssociateMap.mapMany(associate);
   }
