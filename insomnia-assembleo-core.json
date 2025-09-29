@@ -116,13 +116,167 @@
       "method": "POST",
       "url": "{{ _.base_url }}/associates",
       "body": {
-        "mimeType": "application/json",
-        "text": "{\n  \"name\": \"Fulano de Tal\",\n  \"address\": \"Rua das Flores, 123\",\n  \"email\": \"fulano@example.com\",\n  \"image\": null,\n  \"gender\": \"masculino\",\n  \"birthDate\": \"1990/01/01\",\n  \"nationality\": \"Brasileiro\",\n  \"placeOfBirth\": \"São Paulo\",\n  \"number\": \"123A\",\n  \"neighborhood\": \"Centro\",\n  \"city\": \"São Paulo\",\n  \"zipCode\": \"01000-000\",\n  \"cellPhone\": \"(11)99999-9999\",\n  \"rg\": \"1234567\",\n  \"cpf\": \"123.456.789-09\",\n  \"isSpecialNeeds\": false,\n  \"voterRegistrationNumber\": \"123456789\",\n  \"electoralZone\": \"001\",\n  \"electoralSection\": \"002\",\n  \"maritalStatus\": \"solteiro\",\n  \"associatedUnityName\": \"Unidade Central\",\n  \"unityId\": \"{{ _.unityId }}\"\n}"
+        "mimeType": "multipart/form-data",
+        "params": [
+          {
+            "name": "name",
+            "value": "José Carlos Pereira da Silva",
+            "description": "Nome completo do associado",
+            "id": "pair_name",
+            "disabled": false
+          },
+          {
+            "name": "address",
+            "value": "Rua das Flores, 123",
+            "description": "Endereço completo",
+            "id": "pair_address",
+            "disabled": false
+          },
+          {
+            "name": "email",
+            "value": "josecorte@example.com",
+            "description": "Email do associado",
+            "id": "pair_email",
+            "disabled": false
+          },
+          {
+            "name": "gender",
+            "value": "male",
+            "description": "Gênero (male/female)",
+            "id": "pair_gender",
+            "disabled": false
+          },
+          {
+            "name": "birthDate",
+            "value": "31/12/1969",
+            "description": "Data de nascimento (DD/MM/AAAA)",
+            "id": "pair_birthDate",
+            "disabled": false
+          },
+          {
+            "name": "nationality",
+            "value": "Brasileiro",
+            "description": "Nacionalidade",
+            "id": "pair_nationality",
+            "disabled": false
+          },
+          {
+            "name": "placeOfBirth",
+            "value": "São Paulo",
+            "description": "Local de nascimento",
+            "id": "pair_placeOfBirth",
+            "disabled": false
+          },
+          {
+            "name": "number",
+            "value": "123A",
+            "description": "Número da residência",
+            "id": "pair_number",
+            "disabled": false
+          },
+          {
+            "name": "neighborhood",
+            "value": "Centro",
+            "description": "Bairro",
+            "id": "pair_neighborhood",
+            "disabled": false
+          },
+          {
+            "name": "city",
+            "value": "São Paulo",
+            "description": "Cidade",
+            "id": "pair_city",
+            "disabled": false
+          },
+          {
+            "name": "zipCode",
+            "value": "01000-000",
+            "description": "CEP",
+            "id": "pair_zipCode",
+            "disabled": false
+          },
+          {
+            "name": "cellPhone",
+            "value": "(11)99999-9999",
+            "description": "Telefone celular",
+            "id": "pair_cellPhone",
+            "disabled": false
+          },
+          {
+            "name": "rg",
+            "value": "12.345.678-9",
+            "description": "Número do RG",
+            "id": "pair_rg",
+            "disabled": false
+          },
+          {
+            "name": "cpf",
+            "value": "123.456.789-09",
+            "description": "CPF",
+            "id": "pair_cpf",
+            "disabled": false
+          },
+          {
+            "name": "isSpecialNeeds",
+            "value": "false",
+            "description": "Necessidades especiais (true/false)",
+            "id": "pair_isSpecialNeeds",
+            "disabled": false
+          },
+          {
+            "name": "voterRegistrationNumber",
+            "value": "123456789",
+            "description": "Número do título de eleitor",
+            "id": "pair_voterRegistrationNumber",
+            "disabled": false
+          },
+          {
+            "name": "electoralZone",
+            "value": "001",
+            "description": "Zona eleitoral",
+            "id": "pair_electoralZone",
+            "disabled": false
+          },
+          {
+            "name": "electoralSection",
+            "value": "002",
+            "description": "Seção eleitoral",
+            "id": "pair_electoralSection",
+            "disabled": false
+          },
+          {
+            "name": "maritalStatus",
+            "value": "single",
+            "description": "Estado civil",
+            "id": "pair_maritalStatus",
+            "disabled": false
+          },
+          {
+            "name": "associatedUnityName",
+            "value": "Unidade Central",
+            "description": "Nome da unidade associada",
+            "id": "pair_associatedUnityName",
+            "disabled": false
+          },
+          {
+            "name": "unityId",
+            "value": "{{ _.unityId }}",
+            "description": "ID da unidade",
+            "id": "pair_unityId",
+            "disabled": false
+          },
+          {
+            "name": "image",
+            "value": "",
+            "description": "Imagem do associado (arquivo)",
+            "id": "pair_image",
+            "disabled": true,
+            "type": "file"
+          }
+        ]
       },
       "parameters": [],
-      "headers": [
-        { "name": "Content-Type", "value": "application/json" }
-      ],
+      "headers": [],
       "authentication": {},
       "metaSortKey": -1,
       "isPrivate": false,

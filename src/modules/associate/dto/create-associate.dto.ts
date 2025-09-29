@@ -1,3 +1,4 @@
+import { Transform, Type } from 'class-transformer';
 import {
   IsBoolean,
   IsDate,
@@ -30,10 +31,14 @@ export class CreateAssociateDto {
   @IsString({ message: 'Informe o gênero.' })
   gender: string;
 
-  @IsDate({ message: 'Informe a data de nascimento.' })
-  @Matches(/^\d{4}\/\d{2}\/\d{2}$/, {
-    message: 'A data deve estar no formato AAAA/MM/DD.',
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return new Date(value);
+    }
+    return value;
   })
+  @Type(() => Date)
+  @IsDate({ message: 'Informe uma data de nascimento válida.' })
   birthDate: Date;
 
   @IsString({ message: 'Informe a nacionalidade.' })
@@ -75,7 +80,13 @@ export class CreateAssociateDto {
   })
   cpf: string;
 
-  @IsBoolean()
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return ['true', '1', 'on', 'yes'].includes(value.toLowerCase());
+    }
+    return Boolean(value);
+  })
+  @IsBoolean({ message: 'isSpecialNeeds deve ser um valor booleano.' })
   isSpecialNeeds: boolean;
 
   @IsString({ message: 'Informe o número do título de eleitor.' })

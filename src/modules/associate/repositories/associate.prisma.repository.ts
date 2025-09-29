@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { UnityNotFoundException } from 'src/common/exceptions';
 import { PrismaService } from '../../../database/prisma.service';
 import { Associate } from '../entities/associate.entity';
 import type { AssociateRepositoryInterface } from './associate.repository.interface';
@@ -8,12 +9,22 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(associate: Associate): Promise<void> {
+    const unity = await this.prisma.unity.findUnique({
+      where: { id: associate.unityId },
+    });
+
+    if (!unity) {
+      throw new UnityNotFoundException({
+        unityId: associate.unityId,
+      });
+    }
+
     await this.prisma.associate.create({
       data: {
         name: associate.name,
         address: associate.address,
         isActive: associate.isActive,
-        associatedUnityName: associate.associatedUnityName,
+        associatedUnityName: unity.name,
         email: associate.email,
         urlImage: associate.urlImage,
         gender: associate.gender,

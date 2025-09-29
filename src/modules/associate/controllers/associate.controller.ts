@@ -1,25 +1,30 @@
 import {
+  BadRequestException,
   Body,
   Controller,
-  Get,
-  Put,
   Delete,
-  Param,
-  Post,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
+  Post,
+  Put,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import { CreateAssociateDto } from '../dto/create-associate.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 import { AssociateByIdDto } from '../dto/associate-by-id.dto';
+import { AssociatesByUnityDto } from '../dto/associates-by-unity.dto';
+import { CreateAssociateDto } from '../dto/create-associate.dto';
+import { DeleteAssociateDto } from '../dto/delete-associate.dto';
+import { EditAssociateDto } from '../dto/edit-associate.dto';
 import { CreateAssociateUseCase } from '../use-cases/create-associate.use-case';
-import { FindAssociateByIdUseCase } from '../use-cases/find-associate-by-id.use-case';
-import { FindAssociatesByUnityUseCase } from '../use-cases/find-associates-by-unity.use-case';
-import { EditAssociateUseCase } from '../use-cases/edit-associate.use-case';
 import { DeactivateAssociateUseCase } from '../use-cases/deactivate-associate.use-case';
 import { DeleteAssociateUseCase } from '../use-cases/delete-associate.use-case';
-import { AssociatesByUnityDto } from '../dto/associates-by-unity.dto';
-import { EditAssociateDto } from '../dto/edit-associate.dto';
-import { DeleteAssociateDto } from '../dto/delete-associate.dto';
+import { EditAssociateUseCase } from '../use-cases/edit-associate.use-case';
+import { FindAssociateByIdUseCase } from '../use-cases/find-associate-by-id.use-case';
+import { FindAssociatesByUnityUseCase } from '../use-cases/find-associates-by-unity.use-case';
 
 @Controller('associates')
 export class AssociateController {
@@ -34,8 +39,39 @@ export class AssociateController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() createAssociateDto: CreateAssociateDto): Promise<void> {
-    await this.createAssociateUseCase.execute(createAssociateDto);
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: memoryStorage(),
+      limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB
+        fieldSize: 2 * 1024 * 1024, // 2MB for text fields
+      },
+      fileFilter: (_, file, callback) => {
+        if (!file || !file.mimetype) {
+          return callback(null, true); // Allow requests without files
+        }
+        if (!file.mimetype.match(/\/(jpg|jpeg|png|gif|webp)$/)) {
+          const error = new Error(
+            'Apenas imagens são aceitas (jpg, jpeg, png, gif, webp)',
+          );
+          return callback(error, false);
+        }
+        callback(null, true);
+      },
+    }),
+  )
+  async create(
+    @Body() createAssociateDto: CreateAssociateDto,
+    @UploadedFile() image?: Express.Multer.File,
+  ): Promise<void> {
+    if (image && image.size > 5 * 1024 * 1024) {
+      throw new BadRequestException('Arquivo muito grande. Máximo 5MB.');
+    }
+
+    await this.createAssociateUseCase.execute({
+      ...createAssociateDto,
+      image,
+    });
   }
 
   @Get(':id')

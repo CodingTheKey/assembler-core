@@ -1,25 +1,60 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AssociateAlreadyExistsInUnityException } from '../../../common/exceptions';
+import {
+  AssociateAlreadyExistsInUnityException,
+  InvalidAssociateBirthDateException,
+} from '../../../common/exceptions';
+import type { StorageServiceInterface } from '../../storage/interfaces/storage.service.interface';
 import { CreateAssociateDto } from '../dto/create-associate.dto';
 import { AssociateFactory } from '../entities/associate.factory';
 import type { AssociateRepositoryInterface } from '../repositories/associate.repository.interface';
+
+type CreateAssociateInput = Omit<
+  CreateAssociateDto,
+  'birthDate' | 'isSpecialNeeds'
+> & {
+  birthDate: Date | string;
+  isSpecialNeeds: boolean | string;
+  image?: Express.Multer.File;
+};
 
 @Injectable()
 export class CreateAssociateUseCase {
   constructor(
     @Inject('AssociateRepositoryInterface')
     private readonly associateRepository: AssociateRepositoryInterface,
+    @Inject('StorageServiceInterface')
+    private readonly storageService: StorageServiceInterface,
   ) {}
 
-  async execute(input: CreateAssociateDto): Promise<void> {
+  async execute(input: CreateAssociateInput): Promise<void> {
+    const imageUrl = input.image
+      ? await this.storageService.uploadImage(input.image)
+      : input.urlImage || null;
+
+    const birthDate =
+      input.birthDate instanceof Date
+        ? input.birthDate
+        : new Date(input.birthDate);
+
+    if (Number.isNaN(birthDate.getTime())) {
+      throw new InvalidAssociateBirthDateException(String(input.birthDate));
+    }
+
+    const isSpecialNeeds =
+      typeof input.isSpecialNeeds === 'string'
+        ? ['true', '1', 'on', 'yes'].includes(
+            input.isSpecialNeeds.toLowerCase(),
+          )
+        : Boolean(input.isSpecialNeeds);
+
     const associate = AssociateFactory.create({
       name: input.name,
       address: input.address,
       associatedUnityName: input.associatedUnityName,
       email: input.email,
-      urlImage: input.urlImage || null,
+      urlImage: imageUrl,
       gender: input.gender,
-      birthDate: input.birthDate,
+      birthDate,
       nationality: input.nationality,
       placeOfBirth: input.placeOfBirth,
       number: input.number,
@@ -29,7 +64,7 @@ export class CreateAssociateUseCase {
       cellPhone: input.cellPhone,
       rg: input.rg,
       cpf: input.cpf,
-      isSpecialNeeds: input.isSpecialNeeds,
+      isSpecialNeeds,
       voterRegistrationNumber: input.voterRegistrationNumber,
       electoralZone: input.electoralZone,
       electoralSection: input.electoralSection,
