@@ -171,14 +171,14 @@ export class AssociatePrismaRepository implements AssociateRepositoryInterface {
   }
 
   async findByUnityId(unityId: string, search?: string): Promise<Associate[]> {
-    const filters: never[] = [];
+    const filters: any[] = [];
 
     if (search) {
       filters.push(
-        { name: { like: search, mode: 'default' } },
-        { cpf: { contains: search, mode: 'default' } },
-        { email: { contains: search, mode: 'default' } },
-        { cellPhone: { contains: search, mode: 'default' } },
+        { name: { contains: search, mode: 'insensitive' } },
+        { cpf: { contains: search, mode: 'insensitive' } },
+        { email: { contains: search, mode: 'insensitive' } },
+        { cellPhone: { contains: search, mode: 'insensitive' } },
       );
     }
 
