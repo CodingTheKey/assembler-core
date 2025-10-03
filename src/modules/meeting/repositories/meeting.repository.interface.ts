@@ -8,4 +8,5 @@ export interface MeetingRepositoryInterface {
   delete(id: string): Promise<void>;
   countMeetings(): Promise<number>;
   startMeeting(meeting: Meeting): Promise<void>;
+  checkInParticipant(meetingId: string, associateId: string): Promise<void>;
 }

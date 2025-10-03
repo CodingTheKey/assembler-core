@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { UnityNotFoundException } from 'src/common/exceptions';
+import { MeetingParticipantNotFoundException } from 'src/common/exceptions/meeting-participant-not-found.exception';
 import { Associate } from 'src/modules/associate/entities/associate.entity';
 import { PrismaService } from '../../../database/prisma.service';
 import { Meeting, MeetingStatus } from '../entities/meeting.entity';
@@ -17,24 +19,59 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
           include: {
             associate: true,
           },
+          orderBy: { associate: { name: 'asc' } },
         },
       },
       orderBy: { unity: { name: 'asc' } },
     });
 
-    return meetings.map(
-      (meeting) =>
-        new Meeting(
-          meeting.id,
-          meeting.title,
-          meeting.description,
-          meeting.unity.name,
-          meeting.startDate,
-          meeting.location || '',
-          meeting.status.toLowerCase() as MeetingStatus,
-          meeting.unityId,
-        ),
-    );
+    return meetings.map((meeting) => {
+      const meetingEntity = new Meeting(
+        meeting.id,
+        meeting.title,
+        meeting.description,
+        meeting.unity.name,
+        meeting.startDate,
+        meeting.location || '',
+        meeting.status.toLowerCase() as MeetingStatus,
+        meeting.unityId,
+      );
+
+      meeting.participants.forEach((participant) => {
+        meetingEntity.addParticipant(
+          new Associate(
+            participant.associate.id,
+            participant.associate.name,
+            participant.associate.address,
+            participant.associate.isActive,
+            participant.associate.associatedUnityName,
+            participant.associate.email,
+            participant.associate.urlImage,
+            participant.associate.gender,
+            participant.associate.birthDate,
+            participant.associate.nationality,
+            participant.associate.placeOfBirth,
+            participant.associate.number,
+            participant.associate.neighborhood,
+            participant.associate.city,
+            participant.associate.zipCode,
+            participant.associate.cellPhone,
+            participant.associate.rg,
+            participant.associate.cpf,
+            participant.associate.isSpecialNeeds,
+            participant.associate.voterRegistrationNumber,
+            participant.associate.electoralZone,
+            participant.associate.electoralSection,
+            participant.associate.maritalStatus,
+            participant.associate.unityId,
+            participant.associate.deletedAt,
+          ),
+          participant.checkInAt,
+        );
+      });
+
+      return meetingEntity;
+    });
   }
 
   async create(meeting: Meeting): Promise<Meeting> {
@@ -154,6 +191,38 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
     });
   }
 
+  async checkInParticipant(
+    meetingId: string,
+    associateId: string,
+  ): Promise<void> {
+    try {
+      await this.prisma.meetingParticipant.update({
+        where: {
+          meetingId_associateId: {
+            meetingId,
+            associateId,
+          },
+        },
+        data: {
+          checkInAt: new Date(),
+        },
+      });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      ) {
+        throw new MeetingParticipantNotFoundException({
+          meetingId,
+          associateId,
+          cause: error,
+        });
+      }
+
+      throw error;
+    }
+  }
+
   async findById(id: string): Promise<Meeting | null> {
     const result = await this.prisma.meeting.findUnique({
       where: { id },
@@ -212,6 +281,7 @@ export class MeetingPrismaRepository implements MeetingRepositoryInterface {
           p.associate.unityId,
           p.associate.deletedAt,
         ),
+        p.checkInAt,
       );
     });
 

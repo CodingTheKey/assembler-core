@@ -36,6 +36,7 @@ type MappedMeeting = {
     maritalStatus: string | null;
     associatedUnityName: string;
     unityId: string;
+    checkInAt: Date | null;
   }>;
 };
 
@@ -49,7 +50,10 @@ export class MeetingMap {
       startDate: meeting.startDate,
       location: meeting.location || '',
       status: meeting.status,
-      participants: AssociateMap.mapMany(meeting.participantsList),
+      participants: meeting.participantsSnapshots.map(({ associate, checkInAt }) => ({
+        ...AssociateMap.map(associate),
+        checkInAt,
+      })),
     };
   }
 

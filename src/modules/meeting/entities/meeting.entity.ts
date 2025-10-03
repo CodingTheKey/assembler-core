@@ -3,8 +3,13 @@ import { Associate } from '../../associate/entities/associate.entity';
 
 export type MeetingStatus = 'scheduled' | 'canceled' | 'paused' | 'finished';
 
+type MeetingParticipantSnapshot = {
+  associate: Associate;
+  checkInAt: Date | null;
+};
+
 export class Meeting extends BaseEntity {
-  private _participants: Associate[] = [];
+  private _participants: MeetingParticipantSnapshot[] = [];
 
   constructor(
     protected readonly _id: string,
@@ -19,16 +24,34 @@ export class Meeting extends BaseEntity {
     super(_id);
   }
 
-  addParticipant(associate: Associate): void {
-    this._participants.push(associate);
+  addParticipant(associate: Associate, checkInAt: Date | null = null): void {
+    this._participants.push({ associate, checkInAt });
   }
 
   removeParticipant(associateId: string): void {
-    this._participants = this._participants.filter((a) => a.id !== associateId);
+    this._participants = this._participants.filter(
+      (participant) => participant.associate.id !== associateId,
+    );
   }
 
   get participantsList(): Associate[] {
+    return this._participants.map((participant) => participant.associate);
+  }
+
+  get participantsSnapshots(): MeetingParticipantSnapshot[] {
     return this._participants;
+  }
+
+  getParticipantSnapshot(associateId: string): MeetingParticipantSnapshot | undefined {
+    return this._participants.find(
+      (participant) => participant.associate.id === associateId,
+    );
+  }
+
+  getParticipantSnapshotByCpf(
+    cpf: string,
+  ): MeetingParticipantSnapshot | undefined {
+    return this._participants.find((participant) => participant.associate.cpf === cpf);
   }
 
   start(): void {
