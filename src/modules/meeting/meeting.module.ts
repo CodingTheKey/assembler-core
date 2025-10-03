@@ -5,6 +5,7 @@ import { FindMeetingByIdUseCase } from './use-cases/find-meeting-by-id.use-case'
 import { ListMeetingsUseCase } from './use-cases/list-meetings.use-case';
 import { CountMeetingsUseCase } from './use-cases/count-meetings.use-case';
 import { StartMeetingUseCase } from './use-cases/start-meeting.use-case';
+import { CheckInMeetingParticipantUseCase } from './use-cases/check-in-meeting-participant.use-case';
 import { MeetingPrismaRepository } from './repositories/meeting.prisma.repository';
 
 @Module({
@@ -15,6 +16,7 @@ import { MeetingPrismaRepository } from './repositories/meeting.prisma.repositor
     ListMeetingsUseCase,
     CountMeetingsUseCase,
     StartMeetingUseCase,
+    CheckInMeetingParticipantUseCase,
     {
       provide: 'MeetingRepositoryInterface',
       useClass: MeetingPrismaRepository,
