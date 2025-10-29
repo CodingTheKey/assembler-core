@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AssociateNotFoundException } from '../../../common/exceptions';
+import type { StorageServiceInterface } from '../../storage/interfaces/storage.service.interface';
 import { EditAssociateDto } from '../dto/edit-associate.dto';
 import { Associate } from '../entities/associate.entity';
 import { AssociateMap } from '../mappers/associate.map';
 import type { AssociateRepositoryInterface } from '../repositories/associate.repository.interface';
-import type { StorageServiceInterface } from '../../storage/interfaces/storage.service.interface';
 
 @Injectable()
 export class EditAssociateUseCase {
@@ -42,14 +42,16 @@ export class EditAssociateUseCase {
       const d = new Date(assignedAssociates.birthDate);
       // Em caso de data inválida, mantém valor anterior (existing)
       assignedAssociates.birthDate = Number.isNaN(d.getTime())
-        ? mappedExisting.birthDate
+        ? (mappedExisting.birthDate as Date)
         : d;
     }
 
     // isSpecialNeeds pode vir como string
     if (typeof assignedAssociates.isSpecialNeeds === 'string') {
-      const v = assignedAssociates.isSpecialNeeds.toLowerCase();
-      assignedAssociates.isSpecialNeeds = ['true', '1', 'on', 'yes'].includes(v);
+      const v = String(assignedAssociates.isSpecialNeeds).toLowerCase();
+      assignedAssociates.isSpecialNeeds = ['true', '1', 'on', 'yes'].includes(
+        v,
+      );
     }
 
     const associate = new Associate(
