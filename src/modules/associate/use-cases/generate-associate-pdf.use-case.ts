@@ -197,6 +197,7 @@ export class GenerateAssociatePdfUseCase {
     pdfDoc: PDFDocument,
   ): Promise<{ image: any; width: number; height: number } | null> {
     try {
+      console.log(url);
       const response = await fetch(url);
 
       if (!response.ok) {
