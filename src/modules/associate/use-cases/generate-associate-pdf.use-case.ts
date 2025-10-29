@@ -153,11 +153,7 @@ export class GenerateAssociatePdfUseCase {
           const fs = await import('fs');
           const path = await import('path');
 
-          const logoPath = path.join(
-            process.cwd(),
-            'assets',
-            'logo.jpeg',
-          );
+          const logoPath = path.join(process.cwd(), 'assets', 'logo.jpeg');
           if (fs.existsSync(logoPath)) {
             const logoBuffer = fs.readFileSync(logoPath);
             const imageBytes = new Uint8Array(logoBuffer);
@@ -514,10 +510,7 @@ export class GenerateAssociatePdfUseCase {
     // ID (tamanho fixo, menor espaço)
     label = 'ID:';
     value = associate.id || '';
-    const idLabelWidth = helveticaBold.widthOfTextAtSize(
-      label,
-      fieldFontSize,
-    );
+    const idLabelWidth = helveticaBold.widthOfTextAtSize(label, fieldFontSize);
     const idValueWidth = helvetica.widthOfTextAtSize(value, fieldFontSize);
     const idUnderlineEnd = currentX + idLabelWidth + idValueWidth + 50; // Espaço fixo menor para ID
 
@@ -961,7 +954,7 @@ export class GenerateAssociatePdfUseCase {
     yOffset -= fieldLineHeight; // Espaço após a linha
 
     // Texto da Declaração com justificação
-    const termo = `DECLARO que todas as informações fornecidas nesta ficha de inscrição são de minha total responsabilidade e, caso seja necessário, complementarei as informações de acordo com o que for requerido pela associação. Estou ciente de que a inscrição realizada é pessoal e intransferível e não me garante a aquisição de qualquer tipo de moradia, mas me assegura o direito e o dever de, em conjunto com os demais associados, realizar os esforços necessários para cumprir os requisitos individuais e coletivos estabelecidos pelas secretarias habitacionais e órgãos públicos competentes. Reconheço e aceito as normas previstas no Estatuto Social e no Regimento Interno, incluindo a obrigatoriedade de manter as mensalidades em dia, garantindo assim os recursos necessários para o funcionamento da associação. DECLARO, ainda, não ser proprietário(a) de imóvel residencial, nem possuir financiamento imobiliário, e nunca ter sido atendido(a) por programas habitacionais oficiais.`;
+    const termo = `DECLARO que todas as informações fornecidas nesta ficha de inscrição são de minha total responsabilidade e, caso seja necessário, complementarei as informações de acordo com o que for requerido pela associação. Estou ciente de que a inscrição realizada é pessoal e intransferível e não me garante a aquisição de qualquer tipo de moradia, mas me assegura o direito e o dever de, em conjunto com os demais associados que, por si, formam esta associação, realizar os esforços necessários para cumprir os requisitos individuais e coletivos estabelecidos pelas secretarias habitacionais e suas autarquias ou empresas vinculadas aos poderes públicos Federal, Estadual e Municipal, quando houver credenciamento de entidades civis visando à produção habitacional, por meio de seleções ou editais públicos, objetivando, por fim, a conquista do primeiro imóvel, exclusivamente de interesse social, por meio de subsídio habitacional. Reconheço e aceito as normas previstas no Estatuto Social e no Regimento Interno, incluindo a obrigatoriedade de manter as mensalidades em dia, garantindo assim os recursos necessários para custear as despesas operacionais e preservar a estrutura organizacional da associação, que é a ferramenta de utilização dos associados para alcançarem seu objetivo comum, conforme disposto no Artigo 8º do Estatuto Social. DECLARO, ainda, não ser proprietário(a) de imóvel residencial nem possuir financiamento de imóvel em qualquer parte do território nacional, bem como nunca ter sido atendido(a) por programas habitacionais da Secretaria da Habitação, CDHU, COHAB, MCMV ou outros agentes promotores de moradias populares. Declaro, ainda, estar ciente de que, em caso de exclusão ou desistência, não terei direito à devolução de qualquer valor pago, visto que esses pagamentos representam, exclusivamente, o rateio mensal destinado a cobrir as despesas necessárias ao funcionamento da associação, conforme o Artigo 9º, parágrafo único, do Estatuto Social.`;
 
     const textWidth = width - 100; // 50px de margem em cada lado
     const fontSizeDeclaration = 8;

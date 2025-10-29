@@ -98,11 +98,33 @@ export class AssociateController {
   }
 
   @Put(':id')
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: memoryStorage(),
+      limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB
+        fieldSize: 2 * 1024 * 1024, // 2MB for text fields
+      },
+      fileFilter: (_, file, callback) => {
+        if (!file || !file.mimetype) {
+          return callback(null, true); // Allow requests without files
+        }
+        if (!file.mimetype.match(/\/(jpg|jpeg|png|gif|webp)$/)) {
+          const error = new Error(
+            'Apenas imagens são aceitas (jpg, jpeg, png, gif, webp)',
+          );
+          return callback(error, false);
+        }
+        callback(null, true);
+      },
+    }),
+  )
   async edit(
     @Param() params: AssociateByIdDto,
     @Body() body: EditAssociateDto,
+    @UploadedFile() image?: Express.Multer.File,
   ): Promise<void> {
-    await this.editAssociateUseCase.execute({ ...body, id: params.id });
+    await this.editAssociateUseCase.execute({ ...body, id: params.id, image });
   }
 
   @Delete(':id')
