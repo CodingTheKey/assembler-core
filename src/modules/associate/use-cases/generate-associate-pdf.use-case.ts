@@ -365,7 +365,7 @@ export class GenerateAssociatePdfUseCase {
 
     if (associate.urlImage && associate.urlImage?.length > 0) {
       // Usar URL pattern para carregar a imagem do associado
-      const associateImageUrl = `${associate.urlImage}`;
+      const associateImageUrl = `https://r2.assembleo.app/${associate.urlImage}`;
       const associateImageData = await this.loadImageFromR2(
         associateImageUrl,
         pdfDoc,
