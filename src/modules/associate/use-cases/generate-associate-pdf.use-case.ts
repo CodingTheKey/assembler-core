@@ -179,6 +179,7 @@ export class GenerateAssociatePdfUseCase {
 
       // Para imagens do associado, tentar buscar via URL direta (se for uma URL)
       if (key.startsWith('http')) {
+        console.log('aqui aqui aqui aqui', key);
         return await this.loadImage(key, pdfDoc);
       }
 
@@ -365,8 +366,10 @@ export class GenerateAssociatePdfUseCase {
     }
 
     if (associate.urlImage && associate.urlImage?.length > 0) {
-      // Usar URL pattern para carregar a imagem do associado
-      const associateImageUrl = `https://r2.assembleo.app/${associate.urlImage}`;
+      // Verificar se urlImage já é uma URL completa ou apenas um ID/path
+      const associateImageUrl = associate.urlImage.startsWith('http')
+        ? associate.urlImage
+        : `https://r2.assembleo.app/${associate.urlImage}`;
       const associateImageData = await this.loadImageFromR2(
         associateImageUrl,
         pdfDoc,
