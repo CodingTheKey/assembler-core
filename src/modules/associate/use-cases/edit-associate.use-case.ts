@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { AssociateNotFoundException } from '../../../common/exceptions';
 import type { StorageServiceInterface } from '../../storage/interfaces/storage.service.interface';
 import { EditAssociateDto } from '../dto/edit-associate.dto';
 import { Associate } from '../entities/associate.entity';
 import { AssociateMap } from '../mappers/associate.map';
 import type { AssociateRepositoryInterface } from '../repositories/associate.repository.interface';
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 dayjs.extend(customParseFormat);
 
@@ -22,6 +22,7 @@ export class EditAssociateUseCase {
   async execute(
     input: EditAssociateDto & { image?: Express.Multer.File },
   ): Promise<void> {
+    console.log(input);
     const existing = await this.associateRepository.findById(input.id);
 
     if (!existing) {
