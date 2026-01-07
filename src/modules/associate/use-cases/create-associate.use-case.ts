@@ -7,6 +7,10 @@ import type { StorageServiceInterface } from '../../storage/interfaces/storage.s
 import { CreateAssociateDto } from '../dto/create-associate.dto';
 import { AssociateFactory } from '../entities/associate.factory';
 import type { AssociateRepositoryInterface } from '../repositories/associate.repository.interface';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
 
 type CreateAssociateInput = Omit<
   CreateAssociateDto,
@@ -31,13 +35,23 @@ export class CreateAssociateUseCase {
       ? await this.storageService.uploadImage(input.image)
       : input.urlImage || null;
 
-    const birthDate =
-      input.birthDate instanceof Date
-        ? input.birthDate
-        : new Date(input.birthDate);
+    let birthDate: Date;
+    if (input.birthDate instanceof Date) {
+      birthDate = input.birthDate;
+    } else {
+      // Tentar formato DD/MM/YYYY (brasileiro)
+      let parsedDate = dayjs(input.birthDate, 'DD/MM/YYYY', true);
 
-    if (Number.isNaN(birthDate.getTime())) {
-      throw new InvalidAssociateBirthDateException(String(input.birthDate));
+      // Se não for válido, tentar outros formatos
+      if (!parsedDate.isValid()) {
+        parsedDate = dayjs(input.birthDate);
+      }
+
+      if (!parsedDate.isValid()) {
+        throw new InvalidAssociateBirthDateException(String(input.birthDate));
+      }
+
+      birthDate = parsedDate.toDate();
     }
 
     const isSpecialNeeds =

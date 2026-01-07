@@ -5,6 +5,10 @@ import { EditAssociateDto } from '../dto/edit-associate.dto';
 import { Associate } from '../entities/associate.entity';
 import { AssociateMap } from '../mappers/associate.map';
 import type { AssociateRepositoryInterface } from '../repositories/associate.repository.interface';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
 
 @Injectable()
 export class EditAssociateUseCase {
@@ -25,33 +29,41 @@ export class EditAssociateUseCase {
     }
 
     const mappedExisting = AssociateMap.map(existing);
-    const assignedAssociates = Object.assign(mappedExisting, input);
+
+    // Converter birthDate ANTES do assign se vier como string
+    let birthDate = input.birthDate;
+    if (birthDate && typeof birthDate === 'string') {
+      // Tentar formato DD/MM/YYYY (brasileiro)
+      let parsedDate = dayjs(birthDate, 'DD/MM/YYYY', true);
+
+      // Se não for válido, tentar outros formatos
+      if (!parsedDate.isValid()) {
+        parsedDate = dayjs(birthDate);
+      }
+
+      // Se ainda não for válido, mantém valor anterior
+      birthDate = parsedDate.isValid()
+        ? parsedDate.toDate()
+        : (mappedExisting.birthDate as any);
+    }
+
+    // isSpecialNeeds pode vir como string, converter ANTES do assign
+    let isSpecialNeeds = input.isSpecialNeeds;
+    if (typeof isSpecialNeeds === 'string') {
+      const v = String(isSpecialNeeds).toLowerCase();
+      isSpecialNeeds = ['true', '1', 'on', 'yes'].includes(v) as any;
+    }
+
+    const assignedAssociates = Object.assign(mappedExisting, {
+      ...input,
+      birthDate,
+      isSpecialNeeds,
+    });
 
     // Se veio arquivo de imagem no multipart, faz upload e atualiza urlImage
     if (input.image) {
       const uploadedUrl = await this.storageService.uploadImage(input.image);
       assignedAssociates.urlImage = uploadedUrl;
-    }
-
-    // Garantir tipos corretos quando vierem como string (multipart)
-    // birthDate pode vir string, converter para Date.
-    if (
-      assignedAssociates.birthDate &&
-      typeof assignedAssociates.birthDate === 'string'
-    ) {
-      const d = new Date(assignedAssociates.birthDate);
-      // Em caso de data inválida, mantém valor anterior (existing)
-      assignedAssociates.birthDate = Number.isNaN(d.getTime())
-        ? (mappedExisting.birthDate as Date)
-        : d;
-    }
-
-    // isSpecialNeeds pode vir como string
-    if (typeof assignedAssociates.isSpecialNeeds === 'string') {
-      const v = String(assignedAssociates.isSpecialNeeds).toLowerCase();
-      assignedAssociates.isSpecialNeeds = ['true', '1', 'on', 'yes'].includes(
-        v,
-      );
     }
 
     const associate = new Associate(
@@ -81,6 +93,8 @@ export class EditAssociateUseCase {
       assignedAssociates.unityId,
       existing.deletedAt,
     );
+
+    console.log('Associate to be updated:', associate);
 
     await this.associateRepository.update(associate);
   }
